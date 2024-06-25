@@ -1,29 +1,26 @@
-import fs from "fs";
-
-const dataBase = JSON.parse(fs.readFileSync("./dataBase.json", "utf-8"));
-
-console.log("Leyendo desde fs.writeFileSync:", dataBase);
-
 class ProductManager {
   constructor() {
+    this.dataBase = [];
     this.idAcum = 1;
   }
   getProductById(id) {
-    const resultFind = dataBase.find((item) => item.id === id);
+    const resultFind = this.dataBase.find((item) => item.id === id);
 
     resultFind
       ? console.log(resultFind)
       : console.log("El producto no se encuentra en la base de datos");
   }
   getProducts() {
-    return dataBase;
+    return this.dataBase;
   }
   addProducts(product) {
-    if (dataBase.length) {
-      const resultFind = dataBase.find((item) => item.code === product.code);
+    if (this.dataBase.length) {
+      const resultFind = this.dataBase.find(
+        (item) => item.code === product.code
+      );
       if (!resultFind) {
         const productWithId = { ...product, id: this.idAcum++ };
-        dataBase.push(productWithId);
+        this.dataBase.push(productWithId);
 
         return console.log("Se agrego el producto a la base de datos");
       } else {
@@ -31,7 +28,7 @@ class ProductManager {
       }
     } else {
       const productWithId = { ...product, id: this.idAcum++ };
-      dataBase.push(productWithId);
+      this.dataBase.push(productWithId);
 
       return console.log("Se agrego el producto a la base de datos");
     }
