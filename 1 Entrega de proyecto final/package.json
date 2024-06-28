@@ -1,0 +1,21 @@
+{
+  "name": "1-entrega-de-proyecto-final",
+  "version": "1.0.0",
+  "description": "Servidor que contiene endpoints y servicios necesarios para gestionar los productos y carritos de compra en el e-commerce​.",
+  "main": "app.js",
+  "type":"module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/app.js"
+  },
+  "keywords": [],
+  "author": "Nicolas D. Cabrera",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
