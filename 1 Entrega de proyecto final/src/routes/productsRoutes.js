@@ -35,11 +35,24 @@ router.get("/:id", (req, res) => {
       );
 });
 router.post("/", (req, res) => {
-  const newProduct = req.body;
-  const newDataBase = dataBaseJson.push(newProduct);
-  console.log(newDataBase);
-  //return res.send(newDataBase);
-  // Revisar newDataBase porque me da un valor = a 9 cuando me tiene que dar un array.
+  //Agregar validaciones del req.body
+  //Funcion que genera cada nuevo id
+  const newId = () => {
+    if (dataBaseJson.length) {
+      const lastProduct = dataBaseJson[dataBaseJson.length - 1];
+      const lastId = lastProduct.id;
+      return lastId + 1;
+    } else return 1;
+  };
+  //Guardo el nuevo producto con su id en una nueva const y luego lo agrego al dataBase
+  const newProductWithId = { ...req.body, id: newId() };
+  dataBaseJson.push(newProductWithId);
+  //Paso el nuevo dataBase a formato JSON para poder hacer la persistencia de los datos
+  const dataBaseJsonActuality = JSON.stringify(dataBaseJson, null, " ");
+
+  fs.writeFileSync(__dirname + "/data/dataBase.json", dataBaseJsonActuality);
+
+  return res.send("Se agregó correctamente el producto.");
 });
 
 export default router;
