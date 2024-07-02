@@ -81,24 +81,20 @@ router.put("/:id", (req, res) => {
       );
   }
 });
-
+//Borrado permanente del producto
 router.delete("/:id", (req, res) => {
-  const result = dataBaseJson.find((item) => item.id == req.params.id);
-  //Verifica que exista el producto con ese id
-  //Agregar validaciones del req.body
-  if (result) {
-    // result.title = req.body.title;
-    //result.description = req.body.description;
-    // result.code = req.body.code;
-    //result.price = req.body.price;
-    // result.status = req.body.status;
-    //result.stock = req.body.stock;
-    //result.category = req.body.category;
-    //result.thumbnails = req.body.thumbnails;
-    result.name = req.body.name;
-    result.edad = req.body.edad;
+  const indexProductoToDelete = dataBaseJson.findIndex(
+    (item) => item.id == req.params.id
+  );
 
-    return res.send(result);
+  if (indexProductoToDelete > -1) {
+    dataBaseJson.splice(indexProductoToDelete, 1);
+
+    const dataBaseJsonActuality = JSON.stringify(dataBaseJson, null, " ");
+
+    fs.writeFileSync(__dirname + "/data/dataBase.json", dataBaseJsonActuality);
+
+    return res.send("Se borro el producto con éxito");
   } else {
     return res
       .status(404)
