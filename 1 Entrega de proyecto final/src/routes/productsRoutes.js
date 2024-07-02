@@ -22,9 +22,9 @@ router.get("/", (req, res) => {
       );
 });
 router.get("/:id", (req, res) => {
-  const result = dataBaseJson.filter((item) => item.id == req.params.id);
+  const result = dataBaseJson.find((item) => item.id == req.params.id);
   //Verifica que exista el producto con ese id
-  if (result.length) return res.send(result);
+  if (result) return res.send(result);
   else
     return res
       .status(404)
@@ -53,6 +53,61 @@ router.post("/", (req, res) => {
   fs.writeFileSync(__dirname + "/data/dataBase.json", dataBaseJsonActuality);
 
   return res.send("Se agregó correctamente el producto.");
+});
+router.put("/:id", (req, res) => {
+  const result = dataBaseJson.find((item) => item.id == req.params.id);
+  //Verifica que exista el producto con ese id
+  //Agregar validaciones del req.body
+  if (result) {
+    // result.title = req.body.title;
+    //result.description = req.body.description;
+    // result.code = req.body.code;
+    //result.price = req.body.price;
+    // result.status = req.body.status;
+    //result.stock = req.body.stock;
+    //result.category = req.body.category;
+    //result.thumbnails = req.body.thumbnails;
+    result.name = req.body.name;
+    result.edad = req.body.edad;
+
+    return res.send(result);
+  } else {
+    return res
+      .status(404)
+      .send(
+        "El producto con el id:" +
+          req.params.id +
+          " no se encuentra en la base de datos"
+      );
+  }
+});
+
+router.delete("/:id", (req, res) => {
+  const result = dataBaseJson.find((item) => item.id == req.params.id);
+  //Verifica que exista el producto con ese id
+  //Agregar validaciones del req.body
+  if (result) {
+    // result.title = req.body.title;
+    //result.description = req.body.description;
+    // result.code = req.body.code;
+    //result.price = req.body.price;
+    // result.status = req.body.status;
+    //result.stock = req.body.stock;
+    //result.category = req.body.category;
+    //result.thumbnails = req.body.thumbnails;
+    result.name = req.body.name;
+    result.edad = req.body.edad;
+
+    return res.send(result);
+  } else {
+    return res
+      .status(404)
+      .send(
+        "El producto con el id:" +
+          req.params.id +
+          " no se encuentra en la base de datos"
+      );
+  }
 });
 
 export default router;
