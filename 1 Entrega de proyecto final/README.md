@@ -1,3 +1,8 @@
+IMPORTANTE!!!!!
+Paso 1 Abrir terminal estando parados sobre el app.js
+Paso 2 Instalar dependencias
+Paso 3 Ejecutar el comando "npm start"
+
 Se desarrollará un servidor que contenga los endpoints y servicios necesarios para gestionar los productos y carritos de compra en el e-commerce​.
 
 Desarrollar el servidor basado en Node.JS y express, que escuche en el puerto 8080 y disponga de dos grupos de rutas: /products y /carts. Dichos endpoints estarán implementados con el router de express, con las siguientes especificaciones:​
