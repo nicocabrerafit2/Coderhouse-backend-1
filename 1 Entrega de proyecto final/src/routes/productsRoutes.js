@@ -83,18 +83,34 @@ router.put("/:id", (req, res) => {
 });
 //Borrado permanente del producto
 router.delete("/:id", (req, res) => {
-  const indexProductoToDelete = dataBaseJson.findIndex(
-    (item) => item.id == req.params.id
-  );
+  //Verifica que exista el producto con ese id
+  const result = dataBaseJson.find((item) => item.id == req.params.id);
 
-  if (indexProductoToDelete > -1) {
-    dataBaseJson.splice(indexProductoToDelete, 1);
+  if (result) {
+    const indexProductoToDelete = dataBaseJson.findIndex(
+      (item) => item.id == req.params.id
+    );
 
-    const dataBaseJsonActuality = JSON.stringify(dataBaseJson, null, " ");
+    if (indexProductoToDelete > -1) {
+      dataBaseJson.splice(indexProductoToDelete, 1);
 
-    fs.writeFileSync(__dirname + "/data/dataBase.json", dataBaseJsonActuality);
+      const dataBaseJsonActuality = JSON.stringify(dataBaseJson, null, " ");
 
-    return res.send("Se borro el producto con éxito");
+      fs.writeFileSync(
+        __dirname + "/data/dataBase.json",
+        dataBaseJsonActuality
+      );
+
+      return res.send("Se borro el producto con éxito");
+    } else {
+      return res
+        .status(404)
+        .send(
+          "El producto con el id:" +
+            req.params.id +
+            " no se encuentra en la base de datos"
+        );
+    }
   } else {
     return res
       .status(404)
