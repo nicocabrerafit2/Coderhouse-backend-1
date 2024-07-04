@@ -12,6 +12,14 @@
    {
     "product": 66,
     "quantity": 4
+   },
+   {
+    "product": 32,
+    "quantity": 2
+   },
+   {
+    "product": 322,
+    "quantity": 1
    }
   ],
   "id": 2

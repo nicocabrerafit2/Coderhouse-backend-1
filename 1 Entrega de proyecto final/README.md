@@ -1,9 +1,26 @@
+Link al proyecto en github:
+https://github.com/nicocabrerafit2/Coderhouse-backend-1/tree/main/1%20Entrega%20de%20proyecto%20final
+
 IMPORTANTE!!!!!
 Paso 1 Abrir terminal estando parados sobre el app.js
 Paso 2 Instalar dependencias
 Paso 3 Ejecutar el comando "npm start"
 
-Se desarrollará un servidor que contenga los endpoints y servicios necesarios para gestionar los productos y carritos de compra en el e-commerce​.
+Los endpoints para los productos son:
+GET http://localhost:8080/api/products
+GET http://localhost:8080/api/products/:id
+POST http://localhost:8080/api/products
+PUT http://localhost:8080/api/products/:id
+DELETE http://localhost:8080/api/products/:id
+
+Los endpoints para los carritos son:
+GET http://localhost:8080/api/carts
+GET http://localhost:8080/api/carts/:id
+POST http://localhost:8080/api/carts
+POST http://localhost:8080/api/carts/:idcart/:idproduct
+
+La consigna del entregable era:
+Desarrollar un servidor que contenga los endpoints y servicios necesarios para gestionar los productos y carritos de compra en el e-commerce​.
 
 Desarrollar el servidor basado en Node.JS y express, que escuche en el puerto 8080 y disponga de dos grupos de rutas: /products y /carts. Dichos endpoints estarán implementados con el router de express, con las siguientes especificaciones:​
 
@@ -11,7 +28,7 @@ Desarrollar el servidor basado en Node.JS y express, que escuche en el puerto 80
 
 \*La ruta raíz GET / deberá listar todos los productos de la base. (Incluyendo la limitación ?limit del desafío anterior​
 
-\*La ruta GET /:pid deberá traer sólo el producto con el id proporcionado​
+\*La ruta GET /:id deberá traer sólo el producto con el id proporcionado​
 
 - La ruta raíz POST / deberá agregar un nuevo producto con los campos:​
 
@@ -25,13 +42,13 @@ Desarrollar el servidor basado en Node.JS y express, que escuche en el puerto 80
 // category:String​
 // thumbnails:Array de Strings que contenga las rutas donde están almacenadas las imágenes referentes a dicho producto​
 
-# Status es true por defecto.​
+# Status es true por defecto.​(No se manda desde body)
 
 # Todos los campos son obligatorios, a excepción de thumbnails​
 
-- La ruta PUT /:pid deberá tomar un producto y actualizarlo por los campos enviados desde body. NUNCA se debe actualizar o eliminar el id al momento de hacer dicha actualización.​
+- La ruta PUT /:id deberá tomar un producto y actualizarlo por los campos enviados desde body. NUNCA se debe actualizar o eliminar el id al momento de hacer dicha actualización.​
 
-- La ruta DELETE /:pid deberá eliminar el producto con el pid indicado. ​
+- La ruta DELETE /:id deberá eliminar el producto con el id indicado. ​
 
 Para el carrito, el cual tendrá su router en /api/carts/, configurar dos rutas:​
 
@@ -41,7 +58,7 @@ Para el carrito, el cual tendrá su router en /api/carts/, configurar dos rutas:
 
 // products: Array que contendrá objetos que representen cada producto​
 
-- La ruta GET /:cid deberá listar los productos que pertenezcan al carrito con el parámetro cid proporcionados.​
+- La ruta GET /:id deberá listar los productos que pertenezcan al carrito con el parámetro id proporcionados.​
 
 - La ruta POST /:cid/product/:pid deberá agregar el producto al arreglo “products” del carrito seleccionado, agregándose como un objeto bajo el siguiente formato:​
 
@@ -53,18 +70,5 @@ La persistencia de la información se implementará utilizando el file system, d
 No es necesario realizar ninguna implementación visual, todo el flujo se puede realizar por Postman o por el cliente de tu preferencia.​
 Formato​
 
-​
-
-Link al repositorio de Github con el proyecto completo, sin la carpeta de Node_modules.​
-
-​
-
-Sugerencias​
-
-​
-
-No olvides app.use(express.json())​
-
+Sugerencias​:
 No es necesario implementar multer​
-
-Link al video donde se explica.​

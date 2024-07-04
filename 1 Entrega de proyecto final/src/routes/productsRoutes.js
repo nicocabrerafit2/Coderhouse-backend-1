@@ -1,19 +1,18 @@
 import { Router } from "express";
 import fs from "fs";
 import __dirname from "../utils.js";
-const dataBaseJson = JSON.parse(
-  fs.readFileSync(__dirname + "/data/dataBase.json", "utf-8")
-);
+const URL = __dirname + "/data/productos.json";
+const productsInDataBase = JSON.parse(fs.readFileSync(URL, "utf-8"));
 
 const router = Router();
 
 router.get("/", (req, res) => {
   const limit = req.query.limit;
   //Envia un query para limitar los resultamos mostrados
-  const limitData = dataBaseJson.slice(0, limit);
+  const productsToShow = productsInDataBase.slice(0, limit);
   //Verifica que existan productos cargados en la base de datos
-  if (limitData.length) {
-    return res.send(limitData);
+  if (productsToShow.length) {
+    return res.send(productsToShow);
   } else
     return res
       .status(200)
@@ -22,10 +21,13 @@ router.get("/", (req, res) => {
       );
 });
 router.get("/:id", (req, res) => {
-  const result = dataBaseJson.find((item) => item.id == req.params.id);
+  const productFinded = productsInDataBase.find(
+    (item) => item.id == req.params.id
+  );
   //Verifica que exista el producto con ese id
-  if (result) return res.send(result);
-  else
+  if (productFinded) {
+    return res.send(productFinded);
+  } else {
     return res
       .status(404)
       .send(
@@ -33,6 +35,7 @@ router.get("/:id", (req, res) => {
           req.params.id +
           " no se encuentra en la base de datos"
       );
+  }
 });
 router.post("/", (req, res) => {
   const title = req.body.title;
@@ -69,21 +72,23 @@ router.post("/", (req, res) => {
       }
     }
 
-    //Funcion que genera cada nuevo id
+    //Función que genera cada nuevo id
     const newId = () => {
-      if (dataBaseJson.length) {
-        const lastProduct = dataBaseJson[dataBaseJson.length - 1];
+      if (productsInDataBase.length) {
+        const lastProduct = productsInDataBase[productsInDataBase.length - 1];
         const lastId = lastProduct.id;
         return lastId + 1;
-      } else return 1;
+      } else {
+        return 1;
+      }
     };
     //Guardo el nuevo producto con su id en una nueva const y luego lo agrego al dataBase
     const newProductWithId = { ...req.body, status: true, id: newId() };
-    dataBaseJson.push(newProductWithId);
+    productsInDataBase.push(newProductWithId);
     //Paso el nuevo dataBase a formato JSON para poder hacer la persistencia de los datos
-    const dataBaseJsonActuality = JSON.stringify(dataBaseJson, null, " ");
+    const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
     //Realizo la persistencia de la base de datos actualizada
-    fs.writeFileSync(__dirname + "/data/dataBase.json", dataBaseJsonActuality);
+    fs.writeFileSync(URL, updatedDatabase);
 
     return res.send("Se agregó correctamente el producto.");
   } else {
@@ -94,7 +99,7 @@ router.post("/", (req, res) => {
 });
 router.put("/:id", (req, res) => {
   //Verifica que exista el producto con ese id en la base de datos
-  const result = dataBaseJson.find((item) => item.id == req.params.id);
+  const result = productsInDataBase.find((item) => item.id == req.params.id);
 
   if (result) {
     //Agregar validaciones del req.body
@@ -146,12 +151,9 @@ router.put("/:id", (req, res) => {
       }
 
       //Paso el nuevo dataBase a formato JSON para poder hacer la persistencia de los datos
-      const dataBaseJsonActuality = JSON.stringify(dataBaseJson, null, " ");
+      const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
       //Realizo la persistencia de la base de datos actualizada
-      fs.writeFileSync(
-        __dirname + "/data/dataBase.json",
-        dataBaseJsonActuality
-      );
+      fs.writeFileSync(URL, updatedDatabase);
 
       return res.send(
         "Se mofifico el producto con id: " + req.params.id + " correctamente"
@@ -171,16 +173,16 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
   //Verifica que exista el producto con ese id
 
-  const indexProductoToDelete = dataBaseJson.findIndex(
+  const indexProductoToDelete = productsInDataBase.findIndex(
     (item) => item.id == req.params.id
   );
 
   if (indexProductoToDelete > -1) {
-    dataBaseJson.splice(indexProductoToDelete, 1);
+    productsInDataBase.splice(indexProductoToDelete, 1);
 
-    const dataBaseJsonActuality = JSON.stringify(dataBaseJson, null, " ");
+    const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
 
-    fs.writeFileSync(__dirname + "/data/dataBase.json", dataBaseJsonActuality);
+    fs.writeFileSync(URL, updatedDatabase);
 
     return res.send("Se borro el producto con éxito");
   } else {
