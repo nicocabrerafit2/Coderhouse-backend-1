@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
     return res
       .status(200)
       .send(
-        "Se realizo la busqueda y no se encontró ningun producto en la base de datos"
+        "Se realizo la busqueda y no se encontró ningun carrito en la base de datos"
       );
 });
 router.post("/", (req, res) => {
@@ -46,21 +46,29 @@ router.post("/", (req, res) => {
 router.get("/:id", (req, res) => {
   const result = dataBaseCarts.find((item) => item.id == req.params.id);
   //Verifica que exista el producto con ese id
-  if (result) return res.send(result.products);
-  else
+  if (result) {
+    if (result.products.length) {
+      return res.send(result.products);
+    }
+    return res.send(
+      "Este carrito aun no tiene productos cargados dentro del mismo"
+    );
+  } else {
     return res
       .status(404)
       .send(
-        "El producto con el id:" +
+        "El carrito con el id:" +
           req.params.id +
-          " no se encuentra en la base de datos"
+          " no existe en la base de datos"
       );
+  }
 });
 router.post("/:cid/product/:pid", (req, res) => {
+  //Verifica que exista el carrito con ese id
   const result = dataBaseCarts.find((item) => item.id == req.params.cid);
 
-  //Verifica que exista el carrito con ese id
   if (result) {
+    //Verifica si el producto ya esta cargado en el carrito previamente
     const productExistInCart = result.products.find(
       (item) => item.product == req.params.pid
     );
@@ -80,7 +88,7 @@ router.post("/:cid/product/:pid", (req, res) => {
       );
     } else {
       const productInCart = {
-        product: req.params.pid,
+        product: parseInt(req.params.pid),
         quantity: 1,
       };
       result.products.push(productInCart);
@@ -103,7 +111,7 @@ router.post("/:cid/product/:pid", (req, res) => {
     return res
       .status(404)
       .send(
-        "Ese carrito no se encuentra en la base de datos, primero agrege un carrito usando el metodo POST en http://localhost:8080"
+        "Ese carrito no se encuentra en la base de datos, primero agrege un carrito"
       );
   }
 });

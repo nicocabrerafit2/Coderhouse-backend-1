@@ -52,10 +52,10 @@ router.post("/", (req, res) => {
     if (typeof code !== "string") {
       return res.send("El campo code debe ser un texto (string)");
     }
-    if (typeof price == isNaN) {
+    if (typeof price !== "number") {
       return res.send("El campo price debe ser un número (Number)");
     }
-    if (typeof stock == isNaN) {
+    if (typeof stock !== "number") {
       return res.send("El campo stock debe ser un número (Number)");
     }
     if (typeof category !== "string") {
@@ -115,10 +115,10 @@ router.put("/:id", (req, res) => {
       if (typeof code !== "string") {
         return res.send("El campo code debe ser un texto (string)");
       }
-      if (typeof price == isNaN) {
+      if (typeof price !== "number") {
         return res.send("El campo price debe ser un número (Number)");
       }
-      if (typeof stock == isNaN) {
+      if (typeof stock !== "number") {
         return res.send("El campo stock debe ser un número (Number)");
       }
       if (typeof category !== "string") {
@@ -131,6 +131,7 @@ router.put("/:id", (req, res) => {
           );
         }
       }
+      //Guardo el las modificaciones del producto
       result.title = req.body.title;
       result.description = req.body.description;
       result.code = req.body.code;
