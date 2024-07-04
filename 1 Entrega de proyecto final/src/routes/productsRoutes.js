@@ -35,24 +35,65 @@ router.get("/:id", (req, res) => {
       );
 });
 router.post("/", (req, res) => {
-  //Agregar validaciones del req.body
-  //Funcion que genera cada nuevo id
-  const newId = () => {
-    if (dataBaseJson.length) {
-      const lastProduct = dataBaseJson[dataBaseJson.length - 1];
-      const lastId = lastProduct.id;
-      return lastId + 1;
-    } else return 1;
-  };
-  //Guardo el nuevo producto con su id en una nueva const y luego lo agrego al dataBase
-  const newProductWithId = { ...req.body, id: newId() };
-  dataBaseJson.push(newProductWithId);
-  //Paso el nuevo dataBase a formato JSON para poder hacer la persistencia de los datos
-  const dataBaseJsonActuality = JSON.stringify(dataBaseJson, null, " ");
+  //Validaciones del req.body
 
-  fs.writeFileSync(__dirname + "/data/dataBase.json", dataBaseJsonActuality);
+  const title = req.body.title;
+  const description = req.body.description;
+  const code = req.body.code;
+  const price = req.body.price;
+  const stock = req.body.stock;
+  const category = req.body.category;
 
-  return res.send("Se agregó correctamente el producto.");
+  if (title && description && code && price && stock && category) {
+    if (typeof title !== "string") {
+      return res.send("El campo title debe ser un texto (string)");
+    }
+    if (typeof description !== "string") {
+      return res.send("El campo description debe ser un texto (string)");
+    }
+    if (typeof code !== "string") {
+      return res.send("El campo code debe ser un texto (string)");
+    }
+    if (typeof price == isNaN) {
+      return res.send("El campo price debe ser un número (Number)");
+    }
+    if (typeof stock == isNaN) {
+      return res.send("El campo stock debe ser un número (Number)");
+    }
+    if (typeof category !== "string") {
+      return res.send("El campo category debe ser un texto (string)");
+    }
+    if (req.body.thumbnails) {
+      if (!Array.isArray(req.body.thumbnails)) {
+        return res.send(
+          "El campo thumbnails debe ser un arreglo de strings (array)"
+        );
+      }
+    }
+
+    return res.send("Cumple todos los campos");
+    //Funcion que genera cada nuevo id
+    const newId = () => {
+      if (dataBaseJson.length) {
+        const lastProduct = dataBaseJson[dataBaseJson.length - 1];
+        const lastId = lastProduct.id;
+        return lastId + 1;
+      } else return 1;
+    };
+    //Guardo el nuevo producto con su id en una nueva const y luego lo agrego al dataBase
+    const newProductWithId = { ...req.body, id: newId() };
+    dataBaseJson.push(newProductWithId);
+    //Paso el nuevo dataBase a formato JSON para poder hacer la persistencia de los datos
+    const dataBaseJsonActuality = JSON.stringify(dataBaseJson, null, " ");
+
+    fs.writeFileSync(__dirname + "/data/dataBase.json", dataBaseJsonActuality);
+
+    return res.send("Se agregó correctamente el producto.");
+  } else {
+    return res.send(
+      "Es requisito que complete todos los campos (el campo thumbnails si puede quedar vacio)"
+    );
+  }
 });
 router.put("/:id", (req, res) => {
   const result = dataBaseJson.find((item) => item.id == req.params.id);
@@ -63,7 +104,7 @@ router.put("/:id", (req, res) => {
     //result.description = req.body.description;
     // result.code = req.body.code;
     //result.price = req.body.price;
-    // result.status = req.body.status;
+    // result.status = req.body.status; agregar status=true por defecto
     //result.stock = req.body.stock;
     //result.category = req.body.category;
     //result.thumbnails = req.body.thumbnails;
