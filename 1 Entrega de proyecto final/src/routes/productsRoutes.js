@@ -2,11 +2,13 @@ import { Router } from "express";
 import fs from "fs";
 import __dirname from "../utils.js";
 const URL = __dirname + "/data/productos.json";
-const productsInDataBase = JSON.parse(fs.readFileSync(URL, "utf-8"));
 
 const router = Router();
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+  const productsInDataBase = JSON.parse(
+    await fs.promises.readFile(URL, "utf-8")
+  );
   const limit = req.query.limit;
   //Envia un query para limitar los resultamos mostrados
   const productsToShow = productsInDataBase.slice(0, limit);
@@ -20,7 +22,10 @@ router.get("/", (req, res) => {
         "Se realizo la busqueda y no se encontró ningun producto en la base de datos"
       );
 });
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
+  const productsInDataBase = JSON.parse(
+    await fs.promises.readFile(URL, "utf-8")
+  );
   const productFinded = productsInDataBase.find(
     (item) => item.id == req.params.id
   );
@@ -37,7 +42,7 @@ router.get("/:id", (req, res) => {
       );
   }
 });
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const title = req.body.title;
   const description = req.body.description;
   const code = req.body.code;
@@ -88,7 +93,9 @@ router.post("/", (req, res) => {
     //Paso el nuevo dataBase a formato JSON para poder hacer la persistencia de los datos
     const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
     //Realizo la persistencia de la base de datos actualizada
-    fs.writeFileSync(URL, updatedDatabase);
+
+    //fs.writeFileSync(URL, updatedDatabase);//Metodo sincrónico
+    await fs.promises.writeFile(URL, updatedDatabase);
 
     return res.send("Se agregó correctamente el producto.");
   } else {
@@ -97,7 +104,10 @@ router.post("/", (req, res) => {
     );
   }
 });
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
+  const productsInDataBase = JSON.parse(
+    await fs.promises.readFile(URL, "utf-8")
+  );
   //Verifica que exista el producto con ese id en la base de datos
   const result = productsInDataBase.find((item) => item.id == req.params.id);
 
@@ -153,7 +163,8 @@ router.put("/:id", (req, res) => {
       //Paso el nuevo dataBase a formato JSON para poder hacer la persistencia de los datos
       const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
       //Realizo la persistencia de la base de datos actualizada
-      fs.writeFileSync(URL, updatedDatabase);
+      await fs.promises.writeFile(URL, updatedDatabase);
+      //fs.writeFileSync(URL, updatedDatabase);//Metodo sincrónico
 
       return res.send(
         "Se mofifico el producto con id: " + req.params.id + " correctamente"
@@ -170,7 +181,10 @@ router.put("/:id", (req, res) => {
   }
 });
 //Borrado permanente del producto
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
+  const productsInDataBase = JSON.parse(
+    await fs.promises.readFile(URL, "utf-8")
+  );
   //Verifica que exista el producto con ese id
 
   const indexProductoToDelete = productsInDataBase.findIndex(
@@ -182,7 +196,8 @@ router.delete("/:id", (req, res) => {
 
     const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
 
-    fs.writeFileSync(URL, updatedDatabase);
+    //fs.writeFileSync(URL, updatedDatabase);//Metodo sincrónico
+    await fs.promises.writeFile(URL, updatedDatabase);
 
     return res.send("Se borro el producto con éxito");
   } else {

@@ -23,6 +23,17 @@ Los endpoints para los carritos son:
 - POST http://localhost:8080/api/carts
 - POST http://localhost:8080/api/carts/:idcart/:idproduct
 
+JSON de ejemplo para probar el POST y PUT de los productos:
+{
+"title": "Termo Stanley",
+"description": "Un buen termo",
+"code": "Termo222",
+"price": 100,
+"stock": 5555,
+"category": "Cocina",
+"thumbnails": []
+}
+
 La consigna del entregable era:
 
 Desarrollar un servidor que contenga los endpoints y servicios necesarios para gestionar los productos y carritos de compra en el e-commerce​.

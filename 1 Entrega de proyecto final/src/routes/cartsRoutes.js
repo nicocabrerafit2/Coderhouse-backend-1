@@ -3,9 +3,9 @@ import fs from "fs";
 import __dirname from "../utils.js";
 const router = Router();
 const URL = __dirname + "/data/carrito.json";
-const cartsInDatabase = JSON.parse(fs.readFileSync(URL, "utf-8"));
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+  const cartsInDatabase = JSON.parse(await fs.promises.readFile(URL, "utf-8"));
   const limit = req.query.limit;
   //Envia un query para limitar los resultamos mostrados
   const limitData = cartsInDatabase.slice(0, limit);
@@ -19,7 +19,8 @@ router.get("/", (req, res) => {
         "Se realizo la busqueda y no se encontró ningun carrito en la base de datos"
       );
 });
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
+  const cartsInDatabase = JSON.parse(await fs.promises.readFile(URL, "utf-8"));
   //Funcion que genera cada nuevo id
   const newId = () => {
     if (cartsInDatabase.length) {
@@ -35,12 +36,13 @@ router.post("/", (req, res) => {
   cartsInDatabase.push(newCartWithId);
   //Paso el nuevo dataBase a formato JSON para poder hacer la persistencia de los datos
   const updatedDatabase = JSON.stringify(cartsInDatabase, null, " ");
-
-  fs.writeFileSync(URL, updatedDatabase);
+  await fs.promises.writeFile(URL, updatedDatabase);
+  //fs.writeFileSync(URL, updatedDatabase); //Metodo sincrónico
 
   return res.send("Se agregó correctamente el nuevo carrito.");
 });
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
+  const cartsInDatabase = JSON.parse(await fs.promises.readFile(URL, "utf-8"));
   const cartFinded = cartsInDatabase.find((item) => item.id == req.params.id);
   //Verifica que exista el producto con ese id
   if (cartFinded) {
@@ -60,7 +62,8 @@ router.get("/:id", (req, res) => {
       );
   }
 });
-router.post("/:idcart/:idproduct", (req, res) => {
+router.post("/:idcart/:idproduct", async (req, res) => {
+  const cartsInDatabase = JSON.parse(await fs.promises.readFile(URL, "utf-8"));
   //Verifica que exista el carrito con ese id
   const cartFinded = cartsInDatabase.find(
     (item) => item.id == req.params.idcart
@@ -74,8 +77,8 @@ router.post("/:idcart/:idproduct", (req, res) => {
     if (productExistInCart) {
       productExistInCart.quantity++;
       const updatedDatabase = JSON.stringify(cartsInDatabase, null, " ");
-
-      fs.writeFileSync(URL, updatedDatabase);
+      await fs.promises.writeFile(URL, updatedDatabase);
+      //s.writeFileSync(URL, updatedDatabase);Metodo sincrónico
       return res.send(
         "Se agregó una unidad mas del producto con id:" +
           req.params.idproduct +
@@ -91,8 +94,8 @@ router.post("/:idcart/:idproduct", (req, res) => {
 
       //Paso el nuevo dataBase a formato JSON para poder hacer la persistencia de los datos
       const updatedDatabase = JSON.stringify(cartsInDatabase, null, " ");
-
-      fs.writeFileSync(URL, updatedDatabase);
+      await fs.promises.writeFile(URL, updatedDatabase);
+      //fs.writeFileSync(URL, updatedDatabase);Metodo sincrónico
       return res.send(
         "Se agregó el producto con id:" +
           req.params.idproduct +
