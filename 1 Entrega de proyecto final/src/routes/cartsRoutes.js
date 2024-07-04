@@ -106,9 +106,7 @@ router.post("/:idcart/:idproduct", async (req, res) => {
   } else {
     return res
       .status(404)
-      .send(
-        "Ese carrito no se encuentra en la base de datos, primero agrege un carrito"
-      );
+      .send("Ese carrito no se encuentra en la base de datos");
   }
 });
 

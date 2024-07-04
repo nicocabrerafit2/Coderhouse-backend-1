@@ -43,6 +43,9 @@ router.get("/:id", async (req, res) => {
   }
 });
 router.post("/", async (req, res) => {
+  const productsInDataBase = JSON.parse(
+    await fs.promises.readFile(URL, "utf-8")
+  );
   const title = req.body.title;
   const description = req.body.description;
   const code = req.body.code;
