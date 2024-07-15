@@ -18,6 +18,21 @@ const websocketServer = new Server(runServer);
 
 websocketServer.on("connection", (socket) => {
   console.log("Nuevo dispositivo conectado");
+  console.log({
+    id: socket.id,
+    "Números de clientes conectados": websocketServer.engine.clientsCount,
+  });
+  socket.on("mensaje", (data) => {
+    console.log("esto viene desde el cliente: " + data);
+  });
+  socket.emit("respuesta", "Soy el servidor: me llego todo ok");
+  socket.on("mensaje2", (data) => {
+    console.log("esto viene desde el cliente: " + data);
+  });
+  websocketServer.emit(
+    "respuestaATodosLosConectados",
+    "Soy el servidor: hola a todos"
+  );
 });
 
 app.get("/", (req, res) => {
