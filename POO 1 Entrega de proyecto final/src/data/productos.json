@@ -1,1 +1,35 @@
-[]
+[
+ {
+  "title": "Termo Stanley",
+  "description": "Un buen termo",
+  "code": "Termo222",
+  "price": 100,
+  "stock": 5555,
+  "category": "Cocina",
+  "thumbnails": [],
+  "status": true,
+  "id": 1
+ },
+ {
+  "title": "Termo Stanley",
+  "description": "Un buen termo",
+  "code": "Termo222",
+  "price": 100,
+  "stock": 5555,
+  "category": "Cocina",
+  "thumbnails": [],
+  "status": true,
+  "id": 2
+ },
+ {
+  "title": "Termo Stanley",
+  "description": "Un buen termo",
+  "code": "Termo222",
+  "price": 100,
+  "stock": 5555,
+  "category": "Cocina",
+  "thumbnails": [],
+  "status": true,
+  "id": 3
+ }
+]

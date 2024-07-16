@@ -1,2 +1,2 @@
 tiempo dedicado:
-50min
+100min
