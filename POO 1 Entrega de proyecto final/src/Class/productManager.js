@@ -4,6 +4,16 @@ class ProductManager {
   constructor(path) {
     this.path = path;
   }
+  async newId() {
+    const productsInDataBase = await this.showDataBase();
+    if (productsInDataBase.length) {
+      const lastProduct = productsInDataBase[productsInDataBase.length - 1];
+      const lastId = lastProduct.id;
+      return lastId + 1;
+    } else {
+      return 1;
+    }
+  }
   async showDataBase() {
     const productsInDataBase = JSON.parse(
       await fs.promises.readFile(this.path, "utf-8")
@@ -38,38 +48,56 @@ class ProductManager {
     }
   }
   async addProduct(body) {
-    const productsInDataBase = await this.showDataBase();
-    const newId = () => {
-      if (productsInDataBase.length) {
-        const lastProduct = productsInDataBase[productsInDataBase.length - 1];
-        const lastId = lastProduct.id;
-        return lastId + 1;
-      } else {
-        return 1;
+    const { title, description, code, price, stock, category } = body;
+    if (title && description && code && price && stock && category) {
+      if (typeof title !== "string") {
+        return { messaje: "El campo title debe ser un texto (string)" };
       }
-    };
-    const newProductWithId = { ...body, status: true, id: newId() };
-    productsInDataBase.push(newProductWithId);
-    const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
-    await fs.promises.writeFile(this.path, updatedDatabase);
+      if (typeof description !== "string") {
+        return res.send("El campo description debe ser un texto (string)");
+      }
+      if (typeof code !== "string") {
+        return res.send("El campo code debe ser un texto (string)");
+      }
+      if (typeof price !== "number") {
+        return res.send("El campo price debe ser un número (Number)");
+      }
+      if (typeof stock !== "number") {
+        return res.send("El campo stock debe ser un número (Number)");
+      }
+      if (typeof category !== "string") {
+        return res.send("El campo category debe ser un texto (string)");
+      }
+      if (body.thumbnails) {
+        if (!Array.isArray(body.thumbnails)) {
+          return res.send(
+            "El campo thumbnails debe ser un arreglo de strings (array)"
+          );
+        }
+      }
+      const newProductWithId = {
+        ...body,
+        status: true,
+        id: await this.newId(),
+      };
+      const productsInDataBase = await this.showDataBase();
+      productsInDataBase.push(newProductWithId);
+      const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
+      await fs.promises.writeFile(this.path, updatedDatabase);
+    } else {
+      return {
+        messaje:
+          "Es requisito que complete todos los campos (el campo thumbnails si puede quedar vacio)",
+      };
+    }
   }
 
-  async modifyProduct(productId) {
-    const productsInDataBase = JSON.parse(
-      await fs.promises.readFile(this.path, "utf-8")
-    );
-    //Verifica que exista el producto con ese id en la base de datos
-    const result = productsInDataBase.find((item) => item.id == req.params.id);
+  async modifyProduct(productId, body) {
+    const productsInDataBase = await this.showDataBase();
+    const result = productsInDataBase.find((item) => item.id == productId);
 
     if (result) {
-      //Agregar validaciones del req.body
-      const title = req.body.title;
-      const description = req.body.description;
-      const code = req.body.code;
-      const price = req.body.price;
-      const stock = req.body.stock;
-      const category = req.body.category;
-      //Valida que el req.body venga completo con todos los campos obligatorios y luego valida que sean del tipo de dato correspondiente
+      const { title, description, code, price, stock, category } = body;
       if (title && description && code && price && stock && category) {
         if (typeof title !== "string") {
           return res.send("El campo title debe ser un texto (string)");
@@ -96,38 +124,28 @@ class ProductManager {
             );
           }
         }
-        //Guardo el las modificaciones del producto
-        result.title = req.body.title;
-        result.description = req.body.description;
-        result.code = req.body.code;
-        result.price = req.body.price;
-        if (req.body.status === false) {
+        result.title = body.title;
+        result.description = body.description;
+        result.code = body.code;
+        result.price = body.price;
+        if (body.status === false) {
           result.status = false;
         }
-        result.stock = req.body.stock;
-        result.category = req.body.category;
-        if (req.body.thumbnails) {
-          result.thumbnails = req.body.thumbnails;
+        result.stock = body.stock;
+        result.category = body.category;
+        if (body.thumbnails) {
+          result.thumbnails = body.thumbnails;
         }
-
-        //Paso el nuevo dataBase a formato JSON para poder hacer la persistencia de los datos
         const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
-        //Realizo la persistencia de la base de datos actualizada
         await fs.promises.writeFile(this.path, updatedDatabase);
-        //fs.writeFileSync(this.path, updatedDatabase);//Metodo sincrónico
-
-        return res.send(
-          "Se mofifico el producto con id: " + req.params.id + " correctamente"
-        );
       }
     } else {
-      return res
-        .status(404)
-        .send(
+      return {
+        messaje:
           "El producto con el id:" +
-            req.params.id +
-            " no se encuentra en la base de datos"
-        );
+          req.params.id +
+          " no se encuentra en la base de datos",
+      };
     }
   }
   async deleteProduct() {
