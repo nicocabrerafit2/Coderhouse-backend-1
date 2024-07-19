@@ -54,25 +54,26 @@ class ProductManager {
         return { messaje: "El campo title debe ser un texto (string)" };
       }
       if (typeof description !== "string") {
-        return res.send("El campo description debe ser un texto (string)");
+        return { messaje: "El campo description debe ser un texto (string)" };
       }
       if (typeof code !== "string") {
-        return res.send("El campo code debe ser un texto (string)");
+        return { messaje: "El campo code debe ser un texto (string)" };
       }
       if (typeof price !== "number") {
-        return res.send("El campo price debe ser un número (Number)");
+        return { messaje: "El campo price debe ser un número (Number)" };
       }
       if (typeof stock !== "number") {
-        return res.send("El campo stock debe ser un número (Number)");
+        return { messaje: "El campo stock debe ser un número (Number)" };
       }
       if (typeof category !== "string") {
-        return res.send("El campo category debe ser un texto (string)");
+        return { messaje: "El campo category debe ser un texto (string)" };
       }
       if (body.thumbnails) {
         if (!Array.isArray(body.thumbnails)) {
-          return res.send(
-            "El campo thumbnails debe ser un arreglo de strings (array)"
-          );
+          return {
+            messaje:
+              "El campo thumbnails debe ser un arreglo de strings (array)",
+          };
         }
       }
       const newProductWithId = {
@@ -84,6 +85,9 @@ class ProductManager {
       productsInDataBase.push(newProductWithId);
       const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
       await fs.promises.writeFile(this.path, updatedDatabase);
+      return {
+        messaje: "Se agregó correctamente el producto.",
+      };
     } else {
       return {
         messaje:
@@ -100,81 +104,73 @@ class ProductManager {
       const { title, description, code, price, stock, category } = body;
       if (title && description && code && price && stock && category) {
         if (typeof title !== "string") {
-          return res.send("El campo title debe ser un texto (string)");
+          return { messaje: "El campo title debe ser un texto (string)" };
         }
         if (typeof description !== "string") {
-          return res.send("El campo description debe ser un texto (string)");
+          return { messaje: "El campo description debe ser un texto (string)" };
         }
         if (typeof code !== "string") {
-          return res.send("El campo code debe ser un texto (string)");
+          return { messaje: "El campo code debe ser un texto (string)" };
         }
         if (typeof price !== "number") {
-          return res.send("El campo price debe ser un número (Number)");
+          return { messaje: "El campo price debe ser un número (Number)" };
         }
         if (typeof stock !== "number") {
-          return res.send("El campo stock debe ser un número (Number)");
+          return { messaje: "El campo stock debe ser un número (Number)" };
         }
         if (typeof category !== "string") {
-          return res.send("El campo category debe ser un texto (string)");
+          return { messaje: "El campo category debe ser un texto (string)" };
         }
-        if (req.body.thumbnails) {
-          if (!Array.isArray(req.body.thumbnails)) {
-            return res.send(
-              "El campo thumbnails debe ser un arreglo de strings (array)"
-            );
+        if (body.thumbnails) {
+          if (!Array.isArray(body.thumbnails)) {
+            return {
+              messaje:
+                "El campo thumbnails debe ser un arreglo de strings (array)",
+            };
           }
         }
-        result.title = body.title;
-        result.description = body.description;
-        result.code = body.code;
-        result.price = body.price;
+        result.title = title;
+        result.description = description;
+        result.code = code;
+        result.price = price;
         if (body.status === false) {
           result.status = false;
         }
-        result.stock = body.stock;
-        result.category = body.category;
+        result.stock = stock;
+        result.category = category;
         if (body.thumbnails) {
           result.thumbnails = body.thumbnails;
         }
         const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
         await fs.promises.writeFile(this.path, updatedDatabase);
+        return {
+          messaje: "Se modificó correctamente el producto.",
+        };
+      } else {
+        return {
+          messaje:
+            "Es requisito que complete todos los campos (el campo thumbnails si puede quedar vacio)",
+        };
       }
+    }
+  }
+  async deleteProduct(productId) {
+    const productsInDataBase = await this.showDataBase();
+    const indexProductoToDelete = productsInDataBase.findIndex(
+      (item) => item.id == productId
+    );
+    if (indexProductoToDelete > -1) {
+      productsInDataBase.splice(indexProductoToDelete, 1);
+      const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
+      await fs.promises.writeFile(this.path, updatedDatabase);
+      return { messaje: "Se borro el producto con éxito" };
     } else {
       return {
         messaje:
           "El producto con el id:" +
-          req.params.id +
+          productId +
           " no se encuentra en la base de datos",
       };
-    }
-  }
-  async deleteProduct() {
-    const productsInDataBase = JSON.parse(
-      await fs.promises.readFile(this.path, "utf-8")
-    );
-    //Verifica que exista el producto con ese id
-
-    const indexProductoToDelete = productsInDataBase.findIndex(
-      (item) => item.id == req.params.id
-    );
-
-    if (indexProductoToDelete > -1) {
-      productsInDataBase.splice(indexProductoToDelete, 1);
-
-      const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
-
-      //fs.writeFileSync(this.path, updatedDatabase);//Metodo sincrónico
-      await fs.promises.writeFile(this.path, updatedDatabase);
-
-      return res.send("Se borro el producto con éxito");
-    } else {
-      return res
-        .status(404)
-        .send(
-          "El producto con el id:" +
-            req.params.id +
-            " no se encuentra en la base de datos"
-        );
     }
   }
 }

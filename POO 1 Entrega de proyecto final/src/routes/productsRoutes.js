@@ -18,20 +18,23 @@ router.get("/:productId", async (req, res) => {
 });
 router.post("/", async (req, res) => {
   const body = req.body;
-  await newProductManager.addProduct(body);
-  res.send("Se agregó correctamente el producto.");
+  const addProduct = await newProductManager.addProduct(body);
+
+  res.json(addProduct);
 });
 
 router.put("/:productId", async (req, res) => {
   const body = req.body;
   const productId = req.params.productId;
 
-  await newProductManager.modifyProduct(productId, body);
-  res.send("Se modificó correctamente el producto.");
+  const modifyProduct = await newProductManager.modifyProduct(productId, body);
+  res.json(modifyProduct);
 });
-//Borrado permanente del producto
+
 router.delete("/:id", async (req, res) => {
-  await newProductManager.deleteProduct;
+  const productId = req.params.id;
+  const deleteProduct = await newProductManager.deleteProduct(productId);
+  res.json(deleteProduct);
 });
 
 export default router;
