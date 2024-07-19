@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
   const productsToShow = productsInDataBase.slice(0, limit);
   //Verifica que existan productos cargados en la base de datos
   if (productsToShow.length) {
-    return res.send(productsToShow);
+    return res.render("home", { productsToShow });
   } else
     return res
       .status(200)
