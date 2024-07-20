@@ -1,20 +1,54 @@
 const socket = io();
 
-socket.on("productsInDataBaseModificated", (data) => {});
+socket.on('newProduct', (products) => {
+  const productContainer = document.querySelector('#newProduct');
+  productContainer.innerHTML = '';
+  products.forEach(product => {
+      const li = document.createElement('li');
+      li.innerText = product.title
+      productContainer.appendChild(li);
+  })
+})
+socket.on("error",(messaje)=>{
+  Swal.fire(messaje.messaje)
+})
 
-socket.emit(
-  "mensaje",
-  "Saludos soy un cliente",
-  console.log("Cliente:Saludos soy un cliente")
-);
-socket.on("respuesta", (data) => {
-  console.log(data);
-});
-socket.emit(
-  "mensaje2",
-  "Perfecto saluda a todos los clientes",
-  console.log("Cliente:Perfecto saluda a todos los clientes")
-);
-socket.on("respuestaATodosLosConectados", (data) => {
-  console.log(data);
-});
+
+
+
+/*
+div.appendChild(id)
+div.appendChild(title)
+div.appendChild(description)
+div.appendChild(price)
+div.appendChild(code)
+div.appendChild(stock)
+div.appendChild(category)
+*/
+
+const addProduct = ()=>{
+const title = String (document.querySelector("#addTitle").value)
+const description = String (document.querySelector("#addDescription").value)
+const code = String ( document.querySelector("#addCode").value)
+const price = Number (document.querySelector("#addPrice").value)
+const stock = Number (document.querySelector("#addStock").value)
+const category = String (document.querySelector("#addCategory").value)
+
+const productToAdd = {title,description,price,code,stock,category}
+
+socket.emit("addProductFromView",productToAdd)
+
+  document.querySelector("#addTitle").value = ""
+  document.querySelector("#addDescription").value = ""
+  document.querySelector("#addCode").value =""
+  document.querySelector("#addPrice").value= ""
+   document.querySelector("#addStock").value = ""
+  document.querySelector("#addCategory").value= ""
+}
+
+const deleteProduct = ()=>{
+  const id = Number (document.querySelector("#deleteProduct").value)
+  socket.emit("deleteProductFromView",id)
+
+  document.querySelector("#deleteProduct").value = ""
+}

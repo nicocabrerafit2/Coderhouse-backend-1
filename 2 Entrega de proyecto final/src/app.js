@@ -6,7 +6,8 @@ import productNoWebsocket from "./routes/productNoWebsocket.js";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 import __dirname from "./utils.js";
-
+import { ProductManager } from "../src/Class/productManager.js";
+const path = __dirname + "/data/productos.json";
 const app = express();
 const PORT = 8080;
 
@@ -25,23 +26,35 @@ const runServer = app.listen(
   PORT,
   console.log("Servidor corriendo en:http://localhost:" + PORT)
 );
+const newProductManager = new ProductManager(path);
+
 
 const websocketServer = new Server(runServer);
-websocketServer.on("connection", (socket) => {
-  console.log("Nuevo dispositivo conectado");
+
+websocketServer.on("connection", async(socket) => {
   console.log({
-    id: socket.id,
-    "Números de clientes conectados": websocketServer.engine.clientsCount,
+    messaje:"Nuevo dispositivo conectado con id: "+socket.id,
+    numConectados: websocketServer.engine.clientsCount,
+  })
+  const products = await newProductManager.showDataBase();
+  websocketServer.emit("newProduct",products)
+
+  socket.on("addProductFromView", async (productToAdd) => {
+    const body = productToAdd
+    const productAdd = await  newProductManager.addProduct(body);
+    if(productAdd.messaje ==="Se agregó correctamente el producto."){
+      websocketServer.emit("newProduct",products)
+    }else{  websocketServer.emit("error",productAdd)}
+  
+  
   });
-  socket.on("addProduct", (data) => {
-    console.log("Se agrego un producto nuevo se debe enviar un emit");
-  });
-  socket.emit({ productsRoutes });
-  socket.on("mensaje2", (data) => {
-    console.log("esto viene desde el cliente: " + data);
-  });
-  websocketServer.emit(
-    "respuestaATodosLosConectados",
-    "Soy el servidor: hola a todos"
-  );
+  socket.on("deleteProductFromView",async (productToDelete)=>{
+    const productId = productToDelete
+    const deleteProduct = await newProductManager.deleteProduct(productId);
+    if(deleteProduct.messaje ==="Se borro el producto con éxito"){
+      websocketServer.emit("newProduct",products)
+    }else{ websocketServer.emit("error",deleteProduct)}
+   
+  })
+ 
 });

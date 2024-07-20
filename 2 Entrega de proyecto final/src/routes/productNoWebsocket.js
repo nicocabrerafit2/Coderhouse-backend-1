@@ -11,4 +11,5 @@ router.get("/", async (req, res) => {
   res.render("home", { products });
 });
 
+
 export default router;

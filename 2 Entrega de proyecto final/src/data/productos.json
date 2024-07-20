@@ -1,25 +1,22 @@
-[{
-"title": "Termo Stanley",
-"description": "Un buen termo",
-"code": "Termo222",
-"price": 100,
-"stock": 5555,
-"category": "Cocina",
-"thumbnails": []
-},{
-"title": "Termo Stanley",
-"description": "Un buen termo",
-"code": "Termo222",
-"price": 100,
-"stock": 5555,
-"category": "Cocina",
-"thumbnails": []
-},{
-"title": "Termo Stanley",
-"description": "Un buen termo",
-"code": "Termo222",
-"price": 100,
-"stock": 5555,
-"category": "Cocina",
-"thumbnails": []
-}]
+[
+ {
+  "title": "reeee",
+  "description": "vsds",
+  "price": 444,
+  "code": "dfvdf",
+  "stock": 444,
+  "category": "ddfvd",
+  "status": true,
+  "id": 1
+ },
+ {
+  "title": "sdfsdf",
+  "description": "sdfdsf",
+  "price": 333,
+  "code": "sdfdsf",
+  "stock": 333,
+  "category": "sdfsd",
+  "status": true,
+  "id": 2
+ }
+]
