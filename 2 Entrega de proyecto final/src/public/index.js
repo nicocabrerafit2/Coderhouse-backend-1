@@ -1,5 +1,7 @@
 const socket = io();
 
+socket.on("productsInDataBaseModificated", (data) => {});
+
 socket.emit(
   "mensaje",
   "Saludos soy un cliente",

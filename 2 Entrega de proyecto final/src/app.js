@@ -1,9 +1,8 @@
 import express from "express";
 import productsRoutes from "./routes/productsRoutes.js";
 import cartsRoutes from "./routes/cartsRoutes.js";
-import mainRoutes from "./routes/mainRoutes.js";
 import realtimeproducts from "./routes/realtimeproductsRoutes.js";
-
+import productNoWebsocket from "./routes/productNoWebsocket.js";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 import __dirname from "./utils.js";
@@ -17,10 +16,10 @@ app.set("view engine", "handlebars");
 app.use(express.static(__dirname + "/public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/", mainRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/carts", cartsRoutes);
 app.use("/realtimeproducts", realtimeproducts);
+app.use("/productNoWebsocket", productNoWebsocket);
 
 const runServer = app.listen(
   PORT,
