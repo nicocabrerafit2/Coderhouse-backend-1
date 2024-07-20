@@ -13,8 +13,10 @@ router.get("/", async (req, res) => {
   //Envia un query para limitar los resultamos mostrados
   const productsToShow = productsInDataBase.slice(0, limit);
   //Verifica que existan productos cargados en la base de datos
+
   if (productsToShow.length) {
-    return res.render("home", { productsToShow });
+    console.log(productsToShow);
+    return res.json({ productsToShow });
   } else
     return res
       .status(200)

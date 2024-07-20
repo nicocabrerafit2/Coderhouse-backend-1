@@ -17,10 +17,10 @@ app.set("view engine", "handlebars");
 app.use(express.static(__dirname + "/public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/", mainRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/carts", cartsRoutes);
 app.use("/realtimeproducts", realtimeproducts);
-app.use("/", mainRoutes);
 
 const runServer = app.listen(
   PORT,

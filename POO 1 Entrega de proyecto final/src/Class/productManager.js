@@ -1,5 +1,4 @@
 import fs from "fs";
-
 class ProductManager {
   constructor(path) {
     this.path = path;
@@ -95,11 +94,9 @@ class ProductManager {
       };
     }
   }
-
   async modifyProduct(productId, body) {
     const productsInDataBase = await this.showDataBase();
     const result = productsInDataBase.find((item) => item.id == productId);
-
     if (result) {
       const { title, description, code, price, stock, category } = body;
       if (title && description && code && price && stock && category) {

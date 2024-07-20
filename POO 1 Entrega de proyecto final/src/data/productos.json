@@ -1,3 +1,13 @@
 [
- 
+ {
+  "title": "Termo2 Stanley",
+  "description": "Un buen termo",
+  "code": "Termo222",
+  "price": 100,
+  "stock": 5555,
+  "category": "Cocina",
+  "thumbnails": [],
+  "status": true,
+  "id": 2
+ }
 ]
