@@ -1,14 +1,8 @@
 <h1>Lista de productos agregados "ESTA VISTA NO USA WEBSOCKET"</h1>
 <ul>
-{{#each products}}
-<li>
-<article>
-  <p>{{this.title}}</p>
-</article>
-</li>
-{{/each}}
+  {{#each products}}
+    <li>
+      {{this.title}}
+    </li>
+  {{/each}}
 </ul>
-       
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="./index.js"></script>

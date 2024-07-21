@@ -2,7 +2,7 @@ import express from "express";
 import productsRoutes from "./routes/productsRoutes.js";
 import cartsRoutes from "./routes/cartsRoutes.js";
 import realtimeproducts from "./routes/realtimeproductsRoutes.js";
-import productNoWebsocket from "./routes/productNoWebsocket.js";
+import mainRoutes from "./routes/mainRoutes.js";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 import __dirname from "./utils.js";
@@ -20,41 +20,34 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/products", productsRoutes);
 app.use("/api/carts", cartsRoutes);
 app.use("/realtimeproducts", realtimeproducts);
-app.use("/productNoWebsocket", productNoWebsocket);
+app.use("/", mainRoutes);
 
 const runServer = app.listen(
   PORT,
-  console.log("Servidor corriendo en:http://localhost:" + PORT)
+  console.log("Server on:http://localhost:" + PORT)
 );
 const newProductManager = new ProductManager(path);
-
-
 const websocketServer = new Server(runServer);
 
-websocketServer.on("connection", async(socket) => {
-  console.log({
-    messaje:"Nuevo dispositivo conectado con id: "+socket.id,
-    numConectados: websocketServer.engine.clientsCount,
-  })
+websocketServer.on("connection", async (socket) => {
+  console.log("Cliente conectado");
   const products = await newProductManager.showDataBase();
-  websocketServer.emit("newProduct",products)
+  websocketServer.emit("showProducts", products);
 
   socket.on("addProductFromView", async (productToAdd) => {
-    const body = productToAdd
-    const productAdd = await  newProductManager.addProduct(body);
-    if(productAdd.messaje ==="Se agregó correctamente el producto."){
-      websocketServer.emit("newProduct",products)
-    }else{  websocketServer.emit("error",productAdd)}
-  
-  
+    const productAdd = await newProductManager.addProduct(productToAdd);
+    if (productAdd.messaje === "Se agregó correctamente el producto.") {
+      websocketServer.emit("showProducts", products);
+    } else {
+      websocketServer.emit("error", productAdd.messaje);
+    }
   });
-  socket.on("deleteProductFromView",async (productToDelete)=>{
-    const productId = productToDelete
+  socket.on("deleteProductFromView", async (productId) => {
     const deleteProduct = await newProductManager.deleteProduct(productId);
-    if(deleteProduct.messaje ==="Se borro el producto con éxito"){
-      websocketServer.emit("newProduct",products)
-    }else{ websocketServer.emit("error",deleteProduct)}
-   
-  })
- 
+    if (deleteProduct.messaje === "Se borro el producto con éxito") {
+      websocketServer.emit("showProducts", products);
+    } else {
+      websocketServer.emit("error", deleteProduct.messaje);
+    }
+  });
 });

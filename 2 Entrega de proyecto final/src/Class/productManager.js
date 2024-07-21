@@ -89,8 +89,7 @@ class ProductManager {
       };
     } else {
       return {
-        messaje:
-          "Es requisito que complete todos los campos (el campo thumbnails si puede quedar vacio)",
+        messaje: "Es requisito que complete todos los campos",
       };
     }
   }
@@ -164,7 +163,7 @@ class ProductManager {
     } else {
       return {
         messaje:
-          "El producto con el id:" +
+          "El producto con el id: " +
           productId +
           " no se encuentra en la base de datos",
       };

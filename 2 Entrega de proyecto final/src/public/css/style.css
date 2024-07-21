@@ -1,7 +1,14 @@
-
-body{
-background-color: aqua;
+body {
+  background-color: rgb(0, 255, 255);
 }
-.articulos {
+.article {
   border-color: black;
+  border-style: solid;
+  margin: 20px;
+  padding: 20px;
+}
+li {
+  font-family: sans-serif;
+  font-size: large;
+  font-style: italic;
 }
