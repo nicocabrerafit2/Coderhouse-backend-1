@@ -17,5 +17,3 @@ Se utiliza como motor de plantillas handlebars.
 - Vista "realTimeProducts" ubicada en http://localhost:8080/realtimeproducts. SI utiliza websocket.
 
 Donde se pueden abrir ambas pestañas y agregar o eliminar productos, y ver como en la vista con websocket se actualiza la lista de productos y en la otra vista no lo hace (hace falta recargar la pagina para que lo haga).
-
-http://localhost:8080/productNoWebsocket
