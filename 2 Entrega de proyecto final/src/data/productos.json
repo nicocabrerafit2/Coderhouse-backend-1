@@ -1,32 +1,63 @@
 [
  {
-  "title": "reeee",
-  "description": "vsds",
-  "price": 444,
-  "code": "dfvdf",
-  "stock": 444,
-  "category": "ddfvd",
+  "title": "Termo Stanley",
+  "description": "Un buen termo",
+  "code": "Termo222",
+  "price": 100,
+  "stock": 5555,
+  "category": "Cocina",
+  "thumbnails": [],
   "status": true,
   "id": 1
  },
  {
-  "title": "sdfsdf",
-  "description": "sdfdsf",
-  "price": 333,
-  "code": "sdfdsf",
+  "title": "asdasdas",
+  "description": "asdasdas",
+  "code": "asdasd",
+  "price": 33,
   "stock": 333,
-  "category": "sdfsd",
+  "category": "asdasdasd",
   "status": true,
   "id": 2
  },
  {
-  "title": "aasdsa",
-  "description": "asdasd",
-  "code": "asdad",
-  "price": 55,
-  "stock": 555,
-  "category": "sgs",
+  "title": "asdasadasdasddas",
+  "description": "asdasdas",
+  "code": "asdasd",
+  "price": 33,
+  "stock": 333,
+  "category": "asdasdasd",
   "status": true,
   "id": 3
+ },
+ {
+  "title": "afewe",
+  "description": "asdasdas",
+  "code": "asdasd",
+  "price": 33,
+  "stock": 333,
+  "category": "asdasdasd",
+  "status": true,
+  "id": 4
+ },
+ {
+  "title": "wefwefe",
+  "description": "asdasdas",
+  "code": "asdasd",
+  "price": 33,
+  "stock": 333,
+  "category": "asdasdasd",
+  "status": true,
+  "id": 5
+ },
+ {
+  "title": "wefwefwe",
+  "description": "asdasdas",
+  "code": "asdasd",
+  "price": 33,
+  "stock": 333,
+  "category": "asdasdasd",
+  "status": true,
+  "id": 6
  }
 ]
