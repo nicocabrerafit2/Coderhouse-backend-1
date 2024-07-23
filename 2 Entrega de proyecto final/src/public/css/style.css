@@ -30,3 +30,6 @@ li {
   display:flex;
   flex-wrap: wrap-reverse;
 }
+a{
+  text-decoration: none;
+}

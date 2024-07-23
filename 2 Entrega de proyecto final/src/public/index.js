@@ -4,8 +4,8 @@ socket.on("showProducts", (products) => {
   const productContainer = document.querySelector("#products");
   productContainer.innerHTML = "";
   products.forEach((product) => {
-    const li = document.createElement("li");
-    li.innerHTML = product.title
+    const title = document.createElement("li");
+    title.innerHTML = product.title
     const price = document.createElement("p");
     price.innerHTML = "Precio: "+product.price
     const description = document.createElement("p");
@@ -16,7 +16,7 @@ socket.on("showProducts", (products) => {
     productId.innerHTML = "Id: "+product.id
     const div = document.createElement("div")
     div.classList.add("producto");
-    div.append(li,description,category,price,productId);
+    div.append(title,description,category,price,productId);
     productContainer.appendChild(div);
   });
 });
