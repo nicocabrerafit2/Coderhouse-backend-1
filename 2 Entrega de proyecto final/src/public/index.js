@@ -12,9 +12,11 @@ socket.on("showProducts", (products) => {
     description.innerHTML = "Descripcion: "+product.description
     const category = document.createElement("p");
     category.innerHTML = "Categoria: "+product.category
+    const productId = document.createElement("p");
+    productId.innerHTML = "Id: "+product.id
     const div = document.createElement("div")
     div.classList.add("producto");
-    div.append(li,description,category,price);
+    div.append(li,description,category,price,productId);
     productContainer.appendChild(div);
   });
 });
