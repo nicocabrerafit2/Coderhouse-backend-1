@@ -1,45 +1,5 @@
 [
  {
-  "title": "asdasdas",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
-  "status": true,
-  "id": 2
- },
- {
-  "title": "asdasadasdasddas",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
-  "status": true,
-  "id": 3
- },
- {
-  "title": "afewe",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
-  "status": true,
-  "id": 4
- },
- {
-  "title": "wefwefwe",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
-  "status": true,
-  "id": 6
- },
- {
   "title": "Termo Stanley",
   "description": "Un buen termo",
   "code": "Termo222",
@@ -51,144 +11,35 @@
   "id": 1
  },
  {
-  "title": "asdasdas",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
-  "status": true,
-  "id": 2
- },
- {
-  "title": "asdasadasdasddas",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
-  "status": true,
-  "id": 3
- },
- {
-  "title": "afewe",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
-  "status": true,
-  "id": 4
- },
- {
-  "title": "wefwefwe",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
-  "status": true,
-  "id": 6
- },
- {
-  "title": "Termo Stanley",
-  "description": "Un buen termo",
-  "code": "Termo222",
-  "price": 100,
-  "stock": 5555,
+  "title": "Puerta placa reforzada",
+  "description": "La mejor puerta",
+  "code": "puerta1234",
+  "price": 222,
+  "stock": 22,
   "category": "Cocina",
   "thumbnails": [],
   "status": true,
-  "id": 1
- },
- {
-  "title": "asdasdas",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
-  "status": true,
   "id": 2
  },
  {
-  "title": "asdasadasdasddas",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
+  "title": "notebook hp",
+  "description": "La mejor compu gaming",
+  "code": "hp1",
+  "price": 333,
+  "stock": 322,
+  "category": "oficina",
+  "thumbnails": [],
   "status": true,
   "id": 3
  },
  {
-  "title": "afewe",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
+  "title": "escritorio pc",
+  "description": "escritorio de madera",
+  "code": "123",
+  "price": 444,
+  "stock": 33,
+  "category": "muebles",
   "status": true,
   "id": 4
- },
- {
-  "title": "wefwefe",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
-  "status": true,
-  "id": 5
- },
- {
-  "title": "wefwefwe",
-  "description": "asdasdas",
-  "code": "asdasd",
-  "price": 33,
-  "stock": 333,
-  "category": "asdasdasd",
-  "status": true,
-  "id": 6
- },
- {
-  "title": "asdasd",
-  "description": "asdsa",
-  "code": "asdasd",
-  "price": 22,
-  "stock": 22,
-  "category": "asdasd",
-  "status": true,
-  "id": 7
- },
- {
-  "title": "asdasd",
-  "description": "asdsa",
-  "code": "asdasd",
-  "price": 22,
-  "stock": 22,
-  "category": "asdasd",
-  "status": true,
-  "id": 8
- },
- {
-  "title": "aaaaaaaaaaaaaaaaaaaaaa",
-  "description": "asdasd",
-  "code": "asdasd",
-  "price": 44,
-  "stock": 44,
-  "category": "ssda",
-  "status": true,
-  "id": 9
- },
- {
-  "title": "aaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaa",
-  "description": "345454",
-  "code": "534545",
-  "price": 345435,
-  "stock": 345435,
-  "category": "345345",
-  "status": true,
-  "id": 10
  }
 ]
