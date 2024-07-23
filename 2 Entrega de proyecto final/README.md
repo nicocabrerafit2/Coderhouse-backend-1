@@ -25,6 +25,7 @@ Los endpoints para los productos son:
 - POST http://localhost:8080/api/products
 - PUT http://localhost:8080/api/products/:id
 - DELETE http://localhost:8080/api/products/:id
+
 Los endpoints para los carritos son:
 
 - GET http://localhost:8080/api/carts
@@ -34,6 +35,7 @@ Los endpoints para los carritos son:
 
 JSON de ejemplo para probar el POST y PUT de los productos:
 
+```javascript
 {
 "title": "Termo Stanley",
 "description": "Un buen termo",
@@ -43,3 +45,4 @@ JSON de ejemplo para probar el POST y PUT de los productos:
 "category": "Cocina",
 "thumbnails": []
 }
+```
