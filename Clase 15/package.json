@@ -1,0 +1,21 @@
+{
+  "name": "clase-15",
+  "version": "1.0.0",
+  "description": "Realizar una API y Conectar a una dataBade en mongoDB mongoose",
+  "main": "app.js",
+  "type":"module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./src/app.js"
+  },
+  "keywords": [],
+  "author": "Nicolas D. Cabrera",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1"
+  }
+}
