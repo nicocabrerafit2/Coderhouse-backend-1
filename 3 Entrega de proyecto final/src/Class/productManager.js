@@ -1,23 +1,16 @@
-import fs from "fs";
+import { productDb } from "../models/products.model.js";
+
 class ProductManager {
-  constructor(path) {
-    this.path = path;
-  }
-  async newId() {
-    const productsInDataBase = await this.showDataBase();
-    if (productsInDataBase.length) {
-      const lastProduct = productsInDataBase[productsInDataBase.length - 1];
-      const lastId = lastProduct.id;
-      return lastId + 1;
-    } else {
-      return 1;
-    }
-  }
+  constructor() {}
   async showDataBase() {
-    const productsInDataBase = JSON.parse(
-      await fs.promises.readFile(this.path, "utf-8")
-    );
-    return productsInDataBase;
+    try {
+      const productsInDataBase = await productDb.find();
+      return productsInDataBase;
+    } catch {
+      return {
+        messaje: "No se pudo accesder a la base de datos",
+      };
+    }
   }
   async getProducts(limit) {
     const productsInDataBase = await this.showDataBase();
@@ -31,13 +24,10 @@ class ProductManager {
       };
   }
   async getProductById(productId) {
-    const productsInDataBase = await this.showDataBase();
-    const productFinded = productsInDataBase.find(
-      (item) => item.id == productId
-    );
-    if (productFinded) {
+    try {
+      const productFinded = await productDb.findById(productId);
       return productFinded;
-    } else {
+    } catch {
       return {
         messaje:
           "El producto con el id:" +
@@ -78,12 +68,8 @@ class ProductManager {
       const newProductWithId = {
         ...body,
         status: true,
-        id: await this.newId(),
       };
-      const productsInDataBase = await this.showDataBase();
-      productsInDataBase.push(newProductWithId);
-      const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
-      await fs.promises.writeFile(this.path, updatedDatabase);
+      await productDb.create(newProductWithId);
       return {
         messaje: "Se agregó correctamente el producto.",
       };
@@ -125,42 +111,45 @@ class ProductManager {
             };
           }
         }
-        result.title = title;
-        result.description = description;
-        result.code = code;
-        result.price = price;
         if (body.status === false) {
           result.status = false;
         }
-        result.stock = stock;
-        result.category = category;
         if (body.thumbnails) {
           result.thumbnails = body.thumbnails;
         }
-        const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
-        await fs.promises.writeFile(this.path, updatedDatabase);
-        return {
-          messaje: "Se modificó correctamente el producto.",
-        };
-      } else {
-        return {
-          messaje:
-            "Es requisito que complete todos los campos (el campo thumbnails si puede quedar vacio)",
-        };
+        try {
+          await productDb.update(
+            { id: productId },
+            {
+              $set: {
+                title: title,
+                description: description,
+                code: code,
+                price: price,
+                stock: stock,
+                category: category,
+                status: result.status,
+                thumbnails: result.thumbnails,
+              },
+            }
+          );
+          return {
+            messaje: "Se modificó correctamente el producto.",
+          };
+        } catch {
+          return {
+            messaje:
+              "Es requisito que complete todos los campos (el campo thumbnails si puede quedar vacio)",
+          };
+        }
       }
     }
   }
   async deleteProduct(productId) {
-    const productsInDataBase = await this.showDataBase();
-    const indexProductoToDelete = productsInDataBase.findIndex(
-      (item) => item.id == productId
-    );
-    if (indexProductoToDelete > -1) {
-      productsInDataBase.splice(indexProductoToDelete, 1);
-      const updatedDatabase = JSON.stringify(productsInDataBase, null, " ");
-      await fs.promises.writeFile(this.path, updatedDatabase);
+    try {
+      await productDb.deleteOne({ id: productId });
       return { messaje: "Se borro el producto con éxito" };
-    } else {
+    } catch (error) {
       return {
         messaje:
           "El producto con el id: " +

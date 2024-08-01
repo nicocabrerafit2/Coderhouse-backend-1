@@ -8,7 +8,7 @@ import realtimeproducts from "./routes/realtimeproductsRoutes.js";
 import mainRoutes from "./routes/mainRoutes.js";
 import __dirname from "./utils.js";
 import { ProductManager } from "../src/Class/productManager.js";
-const path = __dirname + "/data/productos.json";
+import { productDb } from "./models/products.model.js";
 const app = express();
 const PORT = 8080;
 
@@ -27,7 +27,7 @@ const runServer = app.listen(
   PORT,
   console.log("Server on:http://localhost:" + PORT)
 );
-const newProductManager = new ProductManager(path);
+const newProductManager = new ProductManager(productDb);
 const websocketServer = new Server(runServer);
 
 websocketServer.on("connection", async (socket) => {
@@ -54,5 +54,8 @@ websocketServer.on("connection", async (socket) => {
 });
 
 mongoose
-  .connect("", { dbName: "Products" })
+  .connect(
+    "mongodb+srv://nicocabrera8:Y0BrFdDBQ23amtUR@backendcoderhouse1.nvbxjk0.mongodb.net/?retryWrites=true&w=majority&appName=BackendCoderhouse1",
+    { dbName: "Products" }
+  )
   .then(console.log("conexion con base de datos ok"));

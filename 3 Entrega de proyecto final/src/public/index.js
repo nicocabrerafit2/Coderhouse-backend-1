@@ -5,18 +5,18 @@ socket.on("showProducts", (products) => {
   productContainer.innerHTML = "";
   products.forEach((product) => {
     const title = document.createElement("li");
-    title.innerHTML = product.title
+    title.innerHTML = product.title;
     const price = document.createElement("p");
-    price.innerHTML = "Precio: "+product.price
+    price.innerHTML = "Precio: " + product.price;
     const description = document.createElement("p");
-    description.innerHTML = "Descripcion: "+product.description
+    description.innerHTML = "Descripcion: " + product.description;
     const category = document.createElement("p");
-    category.innerHTML = "Categoria: "+product.category
+    category.innerHTML = "Categoria: " + product.category;
     const productId = document.createElement("p");
-    productId.innerHTML = "Id: "+product.id
-    const div = document.createElement("div")
+    productId.innerHTML = "Id: " + product._id;
+    const div = document.createElement("div");
     div.classList.add("producto");
-    div.append(title,description,category,price,productId);
+    div.append(title, description, category, price, productId);
     productContainer.appendChild(div);
   });
 });
