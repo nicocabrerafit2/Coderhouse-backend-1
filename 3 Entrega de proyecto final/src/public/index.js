@@ -22,6 +22,7 @@ socket.on("showProducts", (products) => {
 });
 socket.on("error", (messaje) => {
   Swal.fire(messaje);
+  return true;
 });
 
 const addProduct = () => {

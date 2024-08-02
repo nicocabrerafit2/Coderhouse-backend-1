@@ -52,10 +52,12 @@ websocketServer.on("connection", async (socket) => {
     }
   });
 });
-
-mongoose
-  .connect(
-    "mongodb+srv://nicocabrera8:Y0BrFdDBQ23amtUR@backendcoderhouse1.nvbxjk0.mongodb.net/?retryWrites=true&w=majority&appName=BackendCoderhouse1",
-    { dbName: "Products" }
-  )
-  .then(console.log("conexion con base de datos ok"));
+const connectToDataBase = async () => {
+  await mongoose
+    .connect(
+      "mongodb+srv://nicocabrera8:Y0BrFdDBQ23amtUR@backendcoderhouse1.nvbxjk0.mongodb.net/?retryWrites=true&w=majority&appName=BackendCoderhouse1",
+      { dbName: "Products" }
+    )
+    .then(console.log("conexion con base de datos ok"));
+};
+connectToDataBase();
