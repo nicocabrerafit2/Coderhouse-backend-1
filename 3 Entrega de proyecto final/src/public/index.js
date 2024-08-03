@@ -19,10 +19,12 @@ socket.on("showProducts", (products) => {
     div.append(title, description, category, price, productId);
     productContainer.appendChild(div);
   });
+
+  console.log(products);
 });
 socket.on("error", (messaje) => {
   Swal.fire(messaje);
-  return true;
+
 });
 
 const addProduct = () => {
@@ -38,6 +40,6 @@ const addProduct = () => {
 };
 
 const deleteProduct = () => {
-  const productId = Number(document.querySelector("#deleteProduct").value);
+  const productId = document.querySelector("#deleteProduct").value;
   socket.emit("deleteProductFromView", productId);
 };

@@ -70,6 +70,7 @@ class ProductManager {
         status: true,
       };
       await productDb.create(newProductWithId);
+    
       return {
         messaje: "Se agregó correctamente el producto.",
       };
@@ -81,7 +82,7 @@ class ProductManager {
   }
   async modifyProduct(productId, body) {
     const productsInDataBase = await this.showDataBase();
-    const result = productsInDataBase.find((item) => item.id == productId);
+    const result = productsInDataBase.find((item) => item._id == productId);
     if (result) {
       const { title, description, code, price, stock, category } = body;
       if (title && description && code && price && stock && category) {
@@ -118,8 +119,8 @@ class ProductManager {
           result.thumbnails = body.thumbnails;
         }
         try {
-          await productDb.update(
-            { id: productId },
+          await productDb.updateOne(
+            { _id: productId },
             {
               $set: {
                 title: title,
@@ -139,17 +140,23 @@ class ProductManager {
         } catch {
           return {
             messaje:
-              "Es requisito que complete todos los campos (el campo thumbnails si puede quedar vacio)",
+              "Error al querer modificar un producto",
           };
         }
       }
     }
+    return {
+      messaje:
+        "El producto a modificar con el id:" +
+        productId +
+        " no se encuentra en la base de datos",
+    };
   }
   async deleteProduct(productId) {
     try {
-      await productDb.deleteOne({ id: productId });
+      await productDb.deleteOne({ _id: productId });
       return { messaje: "Se borro el producto con éxito" };
-    } catch (error) {
+    } catch {
       return {
         messaje:
           "El producto con el id: " +
