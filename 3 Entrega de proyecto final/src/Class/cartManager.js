@@ -1,9 +1,9 @@
+import { cartDb } from "../models/carts.model.js";
 class CartManager {
-  constructor(cartDb) {
-    this.cartDb = cartDb;
+  constructor() {
   }
   async showDataBase() {
-    const cartInDataBase = await this.cartDb.find();
+    const cartInDataBase = await cartDb.find().lean();
     return cartInDataBase;
   }
 
@@ -19,12 +19,12 @@ class CartManager {
       };
   }
   async addCart() {
-    await this.cartDb.create({ products: [] });
+    await cartDb.create({ products: [] });
     return { messaje: "Se agregó correctamente el nuevo carrito." };
   }
   async getCartById(cartId) {
     try {
-      const cartFinded = await this.cartDb.findById({ id: cartId });
+      const cartFinded = await cartDb.findById(cartId);
       if (cartFinded.products.length) {
         return cartFinded.products;
       }
@@ -40,18 +40,16 @@ class CartManager {
     }
   }
   async addProductInCart(params) {
-    try {
-    } catch {}
 
     const cartsInDatabase = await this.showDataBase();
-    const cartFinded = cartsInDatabase.find((item) => item.id == params.idcart);
+    const cartFinded = cartsInDatabase.find((item) => item._id == params.idcart);
     if (cartFinded) {
       const productExistInCart = cartFinded.products.find(
         (item) => item.product == params.idproduct
       );
       if (productExistInCart) {
-        await this.cartDb.update(
-          { id: params.idcart, product: params.idproduct },
+        await cartDb.updateOne(
+          { _id: params.idcart, product: params.idproduct },
           {
             $set: {
               quantity: quantity++,
@@ -67,24 +65,29 @@ class CartManager {
         };
       } else {
         const productInCart = {
-          product: parseInt(params.idproduct),
+          product: params.idproduct,
           quantity: 1,
         };
-        await this.cartDb.update(
-          { id: params.idcart },
-          {
-            $set: {
-              product: productInCart,
-            },
-          }
-        );
-        return {
-          messaje:
-            "Se agregó el producto con id:" +
-            params.idproduct +
-            " al carrito con id:" +
-            params.idcart,
-        };
+try {
+  await cartDb.updateOne(
+    { _id: params.idcart },
+    {
+      $set: {
+        product: productInCart,
+      },
+    }
+  );
+  return {
+    messaje:
+      "Se agregó el producto con id:" +
+      params.idproduct +
+      " al carrito con id:" +
+      params.idcart,
+  };
+} catch {
+  return { messaje: "Problemas al agregar el producto en el carrito" };
+}
+     
       }
     } else {
       return { messaje: "Ese carrito no se encuentra en la base de datos" };

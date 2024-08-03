@@ -2,7 +2,7 @@ import { Router } from "express";
 import { CartManager } from "../Class/cartManager.js";
 import { cartDb } from "../models/carts.model.js";
 const router = Router();
-const newCartManager = new CartManager(cartDb);
+const newCartManager = new CartManager();
 router.get("/", async (req, res) => {
   const limit = req.query.limit;
   const cartsInDatabase = await newCartManager.cartsInDatabase(limit);

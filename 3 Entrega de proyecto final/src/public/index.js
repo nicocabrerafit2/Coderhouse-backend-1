@@ -12,15 +12,17 @@ socket.on("showProducts", (products) => {
     description.innerHTML = "Descripcion: " + product.description;
     const category = document.createElement("p");
     category.innerHTML = "Categoria: " + product.category;
-    const productId = document.createElement("p");
-    productId.innerHTML = "Id: " + product._id;
     const div = document.createElement("div");
+    const button = document.createElement("button");
+    button.innerHTML = "Eliminar";
+    button.addEventListener('click', () => {deleteProduct(product._id)})
+
     div.classList.add("producto");
-    div.append(title, description, category, price, productId);
+
+    div.append(title, description, category, price,button);
     productContainer.appendChild(div);
   });
 
-  console.log(products);
 });
 socket.on("error", (messaje) => {
   Swal.fire(messaje);
@@ -39,7 +41,6 @@ const addProduct = () => {
   socket.emit("addProductFromView", productToAdd);
 };
 
-const deleteProduct = () => {
-  const productId = document.querySelector("#deleteProduct").value;
+const deleteProduct = (productId) => {
   socket.emit("deleteProductFromView", productId);
 };
