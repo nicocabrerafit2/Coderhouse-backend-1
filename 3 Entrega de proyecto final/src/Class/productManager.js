@@ -4,7 +4,7 @@ class ProductManager {
   constructor() {}
   async showDataBase() {
     try {
-      const productsInDataBase = await productDb.find();
+      const productsInDataBase = await productDb.find().lean();
       return productsInDataBase;
     } catch {
       return {

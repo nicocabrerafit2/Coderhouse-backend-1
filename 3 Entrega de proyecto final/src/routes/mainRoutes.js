@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { ProductManager } from "../Class/productManager.js";
-import __dirname from "../utils.js";
-const path = __dirname + "/data/productos.json";
-const newProductManager = new ProductManager(path);
+
+
+const newProductManager = new ProductManager();
 const router = Router();
 
 router.get("/", (req, res) => {
@@ -11,6 +11,7 @@ router.get("/", (req, res) => {
 router.get("/productNoWebsocket", async (req, res) => {
   const limit = req.query.limit;
   const products = await newProductManager.getProducts(limit);
+  console.log( typeof products);
   res.render("home", { products });
 });
 

@@ -7,7 +7,7 @@ import cartsRoutes from "./routes/cartsRoutes.js";
 import realtimeproducts from "./routes/realtimeproductsRoutes.js";
 import mainRoutes from "./routes/mainRoutes.js";
 import __dirname from "./utils.js";
-import { ProductManager } from "../src/Class/productManager.js";
+import { ProductManager } from "./Class/productManager.js";
 const app = express();
 const PORT = 8080;
 
@@ -39,7 +39,7 @@ const connectToDataBase = async () => {
   }
   catch{
     return {
-      messaje: "nicooooooooooooo",
+      messaje: "Error en conexion con base de datos",
     };
   }
   
