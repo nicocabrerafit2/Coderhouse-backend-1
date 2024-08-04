@@ -2,9 +2,11 @@ import { productDb } from "../models/products.model.js";
 
 class ProductManager {
   constructor() {}
-  async showDataBase() {
+  async showDataBase(limit=10,page=1,sortIndicated=-1) {
     try {
-      const productsInDataBase = await productDb.find().lean();
+      const productsInDataBase = await productDb.paginate({},{limit:limit,page:page,sort:{title:sortIndicated}});
+  
+      
       return productsInDataBase;
     } catch {
       return {
@@ -13,10 +15,11 @@ class ProductManager {
     }
   }
   async getProducts(limit) {
-    const productsInDataBase = await this.showDataBase();
-    const productsToShow = productsInDataBase.slice(0, limit);
-    if (productsToShow.length) {
-      return productsToShow;
+    const productsInDataBase = await this.showDataBase(limit);  
+    console.log(productsInDataBase);
+      
+    if (productsInDataBase.docs.length) {
+      return productsInDataBase;
     } else
       return {
         messaje:
