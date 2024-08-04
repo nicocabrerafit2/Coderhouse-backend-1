@@ -48,13 +48,9 @@ class CartManager {
         (item) => item.product == params.idproduct
       );
       if (productExistInCart) {
+        productExistInCart.quantity = productExistInCart.quantity + 1
         await cartDb.updateOne(
-          { _id: params.idcart, product: params.idproduct },
-          {
-            $set: {
-              quantity: quantity++,
-            },
-          }
+          { _id: params.idcart },cartFinded
         );
         return {
           messaje:
@@ -68,14 +64,10 @@ class CartManager {
           product: params.idproduct,
           quantity: 1,
         };
+        cartFinded.products.push(productInCart)
 try {
   await cartDb.updateOne(
-    { _id: params.idcart },
-    {
-      $set: {
-        product: productInCart,
-      },
-    }
+    { _id: params.idcart },cartFinded
   );
   return {
     messaje:
