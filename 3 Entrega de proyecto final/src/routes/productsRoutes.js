@@ -3,10 +3,10 @@ import { ProductManager } from "../Class/productManager.js";
 const router = Router();
 const newProductManager = new ProductManager();
 router.get("/", async (req, res) => {
-  const limit = req.query.limit;
-  const products = await newProductManager.getProducts(limit);
-  res.json(products);
-});
+  const {limit,page,sortIndicated,queryIndicated,categoryFilter} = req.query;
+  const products = await newProductManager.getProducts(limit,page,sortIndicated,queryIndicated,categoryFilter);
+    return  res.json(products);
+  });
 router.get("/:productId", async (req, res) => {
   const productId = req.params.productId;
   const productFinded = await newProductManager.getProductById(productId);

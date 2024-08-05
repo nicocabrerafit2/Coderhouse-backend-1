@@ -2,36 +2,48 @@ import { productDb } from "../models/products.model.js";
 
 class ProductManager {
   constructor() {}
-  async showDataBase(limit=10,page=1,sortIndicated=-1) {
+  async showDataBase(limit=10,page=1,sortIndicated=1,queryIndicated,categoryFilter) {
+    const options = {
+      limit:limit,
+      page:page,
+      queryIndicated:queryIndicated
+    }
+   const sortToNumber = parseInt(sortIndicated)
     try {
-      const productsInDataBase = await productDb.paginate({},{limit:limit,page:page,sort:{title:sortIndicated}});
-  
+      const productsInDataBase = await productDb.aggregate([{$match:{category:"Cocina"}},{$sort:{price:sortToNumber}}])  
+      console.log("allllllllllaaaaa",productsInDataBase);
+      const productsInDataBaseWithPaginate = await productDb.aggregatePaginate(productsInDataBase,options)
+      console.log("acccccccccca",productsInDataBaseWithPaginate);
       
-      return productsInDataBase;
+      return {status:"succes",payload:productsInDataBaseWithPaginate};
     } catch {
-      return {
-        messaje: "No se pudo accesder a la base de datos",
+      return {status:"error",
+        messaje: "No se pudo acceder a la base de datos",
       };
     }
   }
-  async getProducts(limit) {
-    const productsInDataBase = await this.showDataBase(limit);  
-    console.log(productsInDataBase);
-      
-    if (productsInDataBase.docs.length) {
-      return productsInDataBase;
-    } else
-      return {
-        messaje:
-          "Se realizo la busqueda y no se encontró ningun producto en la base de datos",
-      };
+  async getProducts(limit,page,sortIndicated,queryIndicated,categoryFilter) {
+    const productsInDataBase = await this.showDataBase(limit,page,sortIndicated,queryIndicated,categoryFilter); 
+    if (productsInDataBase.status === "succes") {
+      if (productsInDataBase.payload.docs.length) {
+        return productsInDataBase;
+      } else
+        return {
+          status:"error",
+          messaje:
+            "Se realizo la busqueda y no se encontró ningun producto en la base de datos",
+        };
+    } else{
+      return productsInDataBase
+    }
+    
   }
   async getProductById(productId) {
     try {
       const productFinded = await productDb.findById(productId);
       return productFinded;
     } catch {
-      return {
+      return {status:"error",
         messaje:
           "El producto con el id:" +
           productId +
@@ -43,27 +55,27 @@ class ProductManager {
     const { title, description, code, price, stock, category } = body;
     if (title && description && code && price && stock && category) {
       if (typeof title !== "string") {
-        return { messaje: "El campo title debe ser un texto (string)" };
+        return { status:"error",messaje: "El campo title debe ser un texto (string)" };
       }
       if (typeof description !== "string") {
-        return { messaje: "El campo description debe ser un texto (string)" };
+        return { status:"error",messaje: "El campo description debe ser un texto (string)" };
       }
       if (typeof code !== "string") {
-        return { messaje: "El campo code debe ser un texto (string)" };
+        return { status:"error",messaje: "El campo code debe ser un texto (string)" };
       }
       if (typeof price !== "number") {
-        return { messaje: "El campo price debe ser un número (Number)" };
+        return { status:"error",messaje: "El campo price debe ser un número (Number)" };
       }
       if (typeof stock !== "number") {
-        return { messaje: "El campo stock debe ser un número (Number)" };
+        return { status:"error",messaje: "El campo stock debe ser un número (Number)" };
       }
       if (typeof category !== "string") {
-        return { messaje: "El campo category debe ser un texto (string)" };
+        return { status:"error",messaje: "El campo category debe ser un texto (string)" };
       }
       if (body.thumbnails) {
         if (!Array.isArray(body.thumbnails)) {
           return {
-            messaje:
+            status:"error",messaje:
               "El campo thumbnails debe ser un arreglo de strings (array)",
           };
         }
@@ -74,7 +86,7 @@ class ProductManager {
       };
       await productDb.create(newProductWithId);
     
-      return {
+      return {status:"succes",
         messaje: "Se agregó correctamente el producto.",
       };
     } else {
@@ -90,26 +102,26 @@ class ProductManager {
       const { title, description, code, price, stock, category } = body;
       if (title && description && code && price && stock && category) {
         if (typeof title !== "string") {
-          return { messaje: "El campo title debe ser un texto (string)" };
+          return { status:"error",messaje: "El campo title debe ser un texto (string)" };
         }
         if (typeof description !== "string") {
-          return { messaje: "El campo description debe ser un texto (string)" };
+          return { status:"error",messaje: "El campo description debe ser un texto (string)" };
         }
         if (typeof code !== "string") {
-          return { messaje: "El campo code debe ser un texto (string)" };
+          return { status:"error",messaje: "El campo code debe ser un texto (string)" };
         }
         if (typeof price !== "number") {
-          return { messaje: "El campo price debe ser un número (Number)" };
+          return { status:"error",messaje: "El campo price debe ser un número (Number)" };
         }
         if (typeof stock !== "number") {
-          return { messaje: "El campo stock debe ser un número (Number)" };
+          return { status:"error",messaje: "El campo stock debe ser un número (Number)" };
         }
         if (typeof category !== "string") {
-          return { messaje: "El campo category debe ser un texto (string)" };
+          return { status:"error",messaje: "El campo category debe ser un texto (string)" };
         }
         if (body.thumbnails) {
           if (!Array.isArray(body.thumbnails)) {
-            return {
+            return {status:"error",
               messaje:
                 "El campo thumbnails debe ser un arreglo de strings (array)",
             };
@@ -137,18 +149,18 @@ class ProductManager {
               },
             }
           );
-          return {
+          return {status:"succes",
             messaje: "Se modificó correctamente el producto.",
           };
         } catch {
-          return {
+          return {status:"error",
             messaje:
               "Error al querer modificar un producto",
           };
         }
       }
     }
-    return {
+    return {status:"error",
       messaje:
         "El producto a modificar con el id:" +
         productId +
@@ -158,9 +170,9 @@ class ProductManager {
   async deleteProduct(productId) {
     try {
       await productDb.deleteOne({ _id: productId });
-      return { messaje: "Se borro el producto con éxito" };
+      return { status:"succes",messaje: "Se borro el producto con éxito" };
     } catch {
-      return {
+      return {status:"error",
         messaje:
           "El producto con el id: " +
           productId +
