@@ -9,7 +9,7 @@ const productStructure = new Schema({
   category: String,
   thumbnails: Array,
 });
-productStructure.plugin(mongoosePaginate)
+productStructure.plugin(mongoosePaginate);
 const productDb = model("productDb", productStructure);
 
 export { productDb };
