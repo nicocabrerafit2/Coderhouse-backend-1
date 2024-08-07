@@ -3,7 +3,7 @@ const socket = io();
 socket.on("showProducts", (products) => {
   const productContainer = document.querySelector("#products");
   productContainer.innerHTML = "";
-  products.forEach((product) => {
+  products.payload.docs.forEach((product) => {
     const title = document.createElement("li");
     title.innerHTML = product.title;
     const price = document.createElement("p");
@@ -15,18 +15,18 @@ socket.on("showProducts", (products) => {
     const div = document.createElement("div");
     const button = document.createElement("button");
     button.innerHTML = "Eliminar";
-    button.addEventListener('click', () => {deleteProduct(product._id)})
+    button.addEventListener("click", () => {
+      deleteProduct(product._id);
+    });
 
     div.classList.add("producto");
 
-    div.append(title, description, category, price,button);
+    div.append(title, description, category, price, button);
     productContainer.appendChild(div);
   });
-
 });
 socket.on("error", (messaje) => {
   Swal.fire(messaje);
-
 });
 
 const addProduct = () => {

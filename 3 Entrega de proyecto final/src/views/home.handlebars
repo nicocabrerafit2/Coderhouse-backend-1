@@ -1,8 +1,9 @@
 <h1>Lista de productos agregados "ESTA VISTA NO USA WEBSOCKET"</h1>
 <div id="products">
  
-   {{#each products}}
+   {{#each products.payload.docs}}
     <div class="producto">
+     
     <li >
       {{this.title }}
     </li>

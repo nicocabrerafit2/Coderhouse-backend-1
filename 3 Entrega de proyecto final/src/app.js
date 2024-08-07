@@ -29,20 +29,18 @@ const runServer = app.listen(
 const newProductManager = new ProductManager();
 const websocketServer = new Server(runServer);
 const connectToDataBase = async () => {
-  try{
+  try {
     await mongoose
-    .connect(
-      "mongodb+srv://nicocabrera8:Y0BrFdDBQ23amtUR@backendcoderhouse1.nvbxjk0.mongodb.net/?retryWrites=true&w=majority&appName=BackendCoderhouse1",
-      { dbName: "Products" }
-    )
-    .then(console.log("conexion con base de datos ok"));
-  }
-  catch{
+      .connect(
+        "mongodb+srv://nicocabrera8:Y0BrFdDBQ23amtUR@backendcoderhouse1.nvbxjk0.mongodb.net/?retryWrites=true&w=majority&appName=BackendCoderhouse1",
+        { dbName: "Products" }
+      )
+      .then(console.log("conexion con base de datos ok"));
+  } catch {
     return {
       messaje: "Error en conexion con base de datos",
     };
   }
-  
 };
 connectToDataBase();
 
@@ -51,15 +49,16 @@ websocketServer.on("connection", async (socket) => {
   console.log({
     id: socket.id,
     "Números de clientes conectados": websocketServer.engine.clientsCount,
-  })
+  });
   const products = await newProductManager.showDataBase();
+  console.log(products);
   websocketServer.emit("showProducts", products);
 
   socket.on("addProductFromView", async (productToAdd) => {
     const productAdd = await newProductManager.addProduct(productToAdd);
     const products = await newProductManager.showDataBase();
     if (productAdd.messaje === "Se agregó correctamente el producto.") {
-      websocketServer.emit("showProducts",products );
+      websocketServer.emit("showProducts", products);
     } else {
       websocketServer.emit("error", productAdd.messaje);
     }
