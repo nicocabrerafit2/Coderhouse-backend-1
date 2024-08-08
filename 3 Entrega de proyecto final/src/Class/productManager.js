@@ -2,6 +2,16 @@ import { productDb } from "../models/products.model.js";
 
 class ProductManager {
   constructor() {}
+  async getProductsNoWebSocket(){
+    try {
+      const productsInDataBaseWithPaginate = await productDb.find().lean();
+      return { status: "succes", payload: productsInDataBaseWithPaginate };
+    } catch {}
+      return {
+        status: "error",
+        messaje: "No se pudo acceder a la base de datos",
+      };
+  }
   async showDataBase(limit = 10, page = 1, sortIndicated, categoryFilter) {
     const sort = sortIndicated ? { price: parseInt(sortIndicated) } : {};
     const queryCategory = categoryFilter ? { category: categoryFilter } : {};

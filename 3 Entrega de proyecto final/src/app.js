@@ -51,7 +51,6 @@ websocketServer.on("connection", async (socket) => {
     "Números de clientes conectados": websocketServer.engine.clientsCount,
   });
   const products = await newProductManager.showDataBase();
-  console.log(products);
   websocketServer.emit("showProducts", products);
 
   socket.on("addProductFromView", async (productToAdd) => {
