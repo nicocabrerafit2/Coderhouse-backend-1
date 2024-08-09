@@ -3,7 +3,7 @@ class CartManager {
   constructor() {
   }
   async showDataBase() {
-    const cartInDataBase = await cartDb.find().lean();
+    const cartInDataBase = await cartDb.find().populate("products.product").lean();
     return cartInDataBase;
   }
 
@@ -24,7 +24,7 @@ class CartManager {
   }
   async getCartById(cartId) {
     try {
-      const cartFinded = await cartDb.findById(cartId);
+      const cartFinded = await cartDb.findById(cartId).populate("products.product");
       if (cartFinded.products.length) {
         return cartFinded.products;
       }
