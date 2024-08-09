@@ -85,5 +85,95 @@ try {
       return { messaje: "Ese carrito no se encuentra en la base de datos" };
     }
   }
+async clearCart(idcart) {
+  try {
+    const cartFinded = await cartDb.findById(idcart);
+       cartFinded.products = [];
+       try {
+        await cartDb.updateOne(
+          { _id: idcart },cartFinded
+        );
+        return {
+          message:
+            "Se han quitado todos los productos del carrito con el id:" + idcart,
+        };
+      } catch {
+        return {
+          message:
+            "Este carrito no tiene productos cargados para ser eliminados del mismo",
+        };
+      }
+  } catch {
+    return {
+      message:
+        "El carrito con el id:" + idcart + " no existe en la base de datos",
+    };
+  }
 }
-export { CartManager };
+
+async deleteOneProductFronCart(params){
+  const cartsInDatabase = await this.showDataBase();
+  const cartFinded = cartsInDatabase.find((item) => item._id == params.idcart);
+  if (cartFinded) {
+    const productExistInCart = cartFinded.products.filter(product => product.product !== params.idproduct)
+ const cartModificated = {...cartFinded,products:productExistInCart}
+      await cartDb.updateOne(
+        { _id: params.idcart },cartModificated
+      );
+      return {
+        messaje:
+          "Se eliminaron todas las unidades del producto con id:" +
+          params.idproduct +
+          " del carrito con id:" +
+          params.idcart,
+      };
+  }else{
+    return{
+      messaje:
+        "Ese carrito no existe"
+    };
+  }}
+  async modificateQuantityProductFromCart(params,body){
+    const cartsInDatabase = await this.showDataBase();
+    const cartFinded = cartsInDatabase.find((item) => item._id == params.idcart);
+    if (cartFinded) {
+      const productExistInCart = cartFinded.products.find(
+        (item) => item.product == params.idproduct
+      );
+      if (productExistInCart) {
+        productExistInCart.quantity = body.quantity
+        await cartDb.updateOne(
+          { _id: params.idcart },cartFinded)
+          return {
+            messaje:
+              "Se modifico el quantity del producto" }
+       }else {return{ messaje: "Ese producto aun no existe en este carrito" };}
+      }else{  return{    messaje:      "Ese carrito no existe"  };
+}  }
+
+async modificateCart(params,body){
+  const cartsInDatabase = await this.showDataBase();
+  const cartFinded = cartsInDatabase.find((item) => item._id == params.idcart);
+  if (cartFinded) {
+    const cartModificated = {...cartFinded,products:body.products}
+      await cartDb.updateOne(
+        { _id: params.idcart },cartModificated)
+        return {
+          messaje:
+            "Se modificaron todos los productos del carrito" }
+    }else{  return{    messaje:      "Ese carrito no existe"  };
+}  }
+
+
+
+
+
+
+
+
+
+
+
+
+}
+export { CartManager }

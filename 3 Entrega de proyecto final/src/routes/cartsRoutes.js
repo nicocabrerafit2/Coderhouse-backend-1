@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { CartManager } from "../Class/cartManager.js";
-import { cartDb } from "../models/carts.model.js";
+
 const router = Router();
 const newCartManager = new CartManager();
 router.get("/", async (req, res) => {
@@ -20,6 +20,27 @@ router.get("/:id", async (req, res) => {
 router.post("/:idcart/:idproduct", async (req, res) => {
   const params = req.params;
   const addProductInCart = await newCartManager.addProductInCart(params);
+  res.json(addProductInCart);
+});
+router.delete("/:idcart", async (req, res) => {
+  const idcart = req.params.idcart;
+  const addProductInCart = await newCartManager.clearCart(idcart);
+  res.json(addProductInCart);
+});
+router.delete("/:idcart/:idproduct", async (req, res) => {
+  const params = req.params;
+  const addProductInCart = await newCartManager.deleteOneProductFronCart(params);
+  res.json(addProductInCart);
+});
+router.put("/:idcart/:idproduct", async (req, res) => {
+  const params = req.params;
+  const body = req.body;
+  const addProductInCart = await newCartManager.modificateQuantityProductFromCart(params,body);
+  res.json(addProductInCart);
+});router.put("/:idcart", async (req, res) => {
+  const params = req.params;
+  const body = req.body;
+  const addProductInCart = await newCartManager.modificateCart(params,body);
   res.json(addProductInCart);
 });
 
