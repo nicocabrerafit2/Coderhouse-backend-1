@@ -18,8 +18,13 @@ socket.on("showProducts", (products) => {
     button.addEventListener("click", () => {
       deleteProduct(product._id);
     });
+    const buttonAddProductToCart = document.createElement("button");
+    buttonAddProductToCart.innerHTML = "Agregar al carrito";
+    buttonAddProductToCart.addEventListener("click", () => {
+      addProductInCart(product._id);
+    });
     div.classList.add("producto");
-    div.append(title, description, category, price, button);
+    div.append(title, description, category, price, button,buttonAddProductToCart);
     productContainer.appendChild(div);
   });
   const buttonsLine = document.querySelector("#buttons");
@@ -68,4 +73,7 @@ const deleteProduct = (productId) => {
 };
 const refreshPage = (page) => {
   socket.emit("refreshPage", page);
+};
+const addProductInCart = (productId) => {
+  socket.emit("addProductInCart", productId);
 };

@@ -7,6 +7,7 @@ import cartsRoutes from "./routes/cartsRoutes.js";
 import realtimeproducts from "./routes/realtimeproductsRoutes.js";
 import mainRoutes from "./routes/mainRoutes.js";
 import __dirname from "./utils.js";
+import { CartManager } from "./Class/cartManager.js";
 import { ProductManager } from "./Class/productManager.js";
 const app = express();
 const PORT = 8080;
@@ -27,6 +28,7 @@ const runServer = app.listen(
   console.log("Server on:http://localhost:" + PORT)
 );
 const newProductManager = new ProductManager();
+const newCartManager = new CartManager();
 const websocketServer = new Server(runServer);
 const connectToDataBase = async () => {
   try {
@@ -74,4 +76,17 @@ websocketServer.on("connection", async (socket) => {
   socket.on("refreshPage", async (page) => {
     const products = await newProductManager.showDataBase(undefined,page);    
       websocketServer.emit("showProducts", products);
-})})
+})
+socket.on("addProductInCart", async (productId) => {
+  const carts = await newCartManager.showDataBase();
+  const numberOfCart = carts[0]._id.toString()
+  const params = {idcart:numberOfCart,idproduct:productId}
+  const result = await newCartManager.addProductInCart(params);
+  if (result.status === "error") {
+    websocketServer.emit("error", result.messaje);
+  } 
+});
+
+
+
+})

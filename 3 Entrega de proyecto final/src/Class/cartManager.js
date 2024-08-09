@@ -40,12 +40,11 @@ class CartManager {
     }
   }
   async addProductInCart(params) {
-
     const cartsInDatabase = await this.showDataBase();
     const cartFinded = cartsInDatabase.find((item) => item._id == params.idcart);
     if (cartFinded) {
       const productExistInCart = cartFinded.products.find(
-        (item) => item.product == params.idproduct
+        (item) => item.product._id == params.idproduct
       );
       if (productExistInCart) {
         productExistInCart.quantity = productExistInCart.quantity + 1
@@ -77,12 +76,12 @@ try {
       params.idcart,
   };
 } catch {
-  return { messaje: "Problemas al agregar el producto en el carrito" };
+  return { status: "error",messaje: "Problemas al agregar el producto en el carrito" };
 }
      
       }
     } else {
-      return { messaje: "Ese carrito no se encuentra en la base de datos" };
+      return { status: "error",messaje: "Ese carrito no se encuentra en la base de datos" };
     }
   }
 async clearCart(idcart) {
