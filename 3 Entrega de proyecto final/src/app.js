@@ -71,4 +71,7 @@ websocketServer.on("connection", async (socket) => {
       websocketServer.emit("error", deleteProduct.messaje);
     }
   });
-});
+  socket.on("refreshPage", async (page) => {
+    const products = await newProductManager.showDataBase(undefined,page);    
+      websocketServer.emit("showProducts", products);
+})})

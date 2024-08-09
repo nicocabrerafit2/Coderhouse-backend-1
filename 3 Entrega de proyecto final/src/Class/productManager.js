@@ -1,5 +1,4 @@
 import { productDb } from "../models/products.model.js";
-
 class ProductManager {
   constructor() {}
   async getProductsNoWebSocket(){

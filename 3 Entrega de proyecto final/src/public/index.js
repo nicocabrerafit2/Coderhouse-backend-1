@@ -18,13 +18,35 @@ socket.on("showProducts", (products) => {
     button.addEventListener("click", () => {
       deleteProduct(product._id);
     });
-
     div.classList.add("producto");
-
     div.append(title, description, category, price, button);
     productContainer.appendChild(div);
   });
-});
+  const buttonsLine = document.querySelector("#buttons");
+  buttonsLine.innerHTML = "";
+if (products.payload.hasPrevPage) {
+  const btnAtras = document.createElement("button")
+   btnAtras.innerHTML = "Atras";
+   btnAtras.addEventListener("click", () => {
+    const page =products.payload.page - 1
+    refreshPage(page)
+  });
+  buttonsLine.appendChild(btnAtras,);
+}
+if (products.payload.hasNextPage) {
+  const btnNext =  document.createElement("button")
+  btnNext.innerHTML = "Siguiente";
+  btnNext.addEventListener("click", () => {
+    const page =products.payload.page + 1
+    refreshPage(page)
+
+  });
+  buttonsLine.appendChild(btnNext);
+}
+
+}
+)
+
 socket.on("error", (messaje) => {
   Swal.fire(messaje);
 });
@@ -43,4 +65,7 @@ const addProduct = () => {
 
 const deleteProduct = (productId) => {
   socket.emit("deleteProductFromView", productId);
+};
+const refreshPage = (page) => {
+  socket.emit("refreshPage", page);
 };
