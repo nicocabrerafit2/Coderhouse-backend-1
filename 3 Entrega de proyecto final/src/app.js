@@ -6,6 +6,7 @@ import productsRoutes from "./routes/productsRoutes.js";
 import cartsRoutes from "./routes/cartsRoutes.js";
 import realtimeproducts from "./routes/realtimeproductsRoutes.js";
 import mainRoutes from "./routes/mainRoutes.js";
+import cartsViewRoutes from "./routes/cartsViewRoutes.js";
 import __dirname from "./utils.js";
 import { CartManager } from "./Class/cartManager.js";
 import { ProductManager } from "./Class/productManager.js";
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/products", productsRoutes);
 app.use("/api/carts", cartsRoutes);
 app.use("/realtimeproducts", realtimeproducts);
+app.use("/carts", cartsViewRoutes);
 app.use("/", mainRoutes);
 
 const runServer = app.listen(

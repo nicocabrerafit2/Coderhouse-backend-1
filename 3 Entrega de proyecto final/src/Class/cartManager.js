@@ -24,7 +24,7 @@ class CartManager {
   }
   async getCartById(cartId) {
     try {
-      const cartFinded = await cartDb.findById(cartId).populate("products.product");
+      const cartFinded = await cartDb.findById(cartId).populate("products.product").lean();
       if (cartFinded.products.length) {
         return cartFinded.products;
       }
