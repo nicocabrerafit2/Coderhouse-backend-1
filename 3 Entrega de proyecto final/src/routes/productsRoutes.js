@@ -3,12 +3,12 @@ import { ProductManager } from "../Class/productManager.js";
 const router = Router();
 const newProductManager = new ProductManager();
 router.get("/", async (req, res) => {
-  const { limit, page, sortIndicated, categoryFilter } = req.query;
+  const { limit, page, sort, category } = req.query;
   const products = await newProductManager.getProducts(
     limit,
     page,
-    sortIndicated,
-    categoryFilter
+    sort,
+    category
   );
   return res.json(products);
 });

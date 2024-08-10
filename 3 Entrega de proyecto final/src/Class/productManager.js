@@ -11,14 +11,19 @@ class ProductManager {
         messaje: "No se pudo acceder a la base de datos",
       };
   }
-  async showDataBase(limit = 10, page = 1, sortIndicated, categoryFilter) {
-    const sort = sortIndicated ? { price: parseInt(sortIndicated) } : {};
-    const queryCategory = categoryFilter ? { category: categoryFilter } : {};
+  async showDataBase(limit = 10, page = 1, sort, category) {
+if (sort) {
+  sort==="asc"? sort ={ price: 1 }:{ price: -1 }
+}else{
+  sort = { }
+}
+    const queryCategory = category ? { category: category } : {};
     try {
       const productsInDataBaseWithPaginate = await productDb.paginate(
         queryCategory,
         { limit, page, sort }
       );
+     
       return { status: "succes", payload: productsInDataBaseWithPaginate };
     } catch {
       return {
@@ -27,12 +32,12 @@ class ProductManager {
       };
     }
   }
-  async getProducts(limit, page, sortIndicated, categoryFilter) {
+  async getProducts(limit, page, sort, category) {
     const productsInDataBase = await this.showDataBase(
       limit,
       page,
-      sortIndicated,
-      categoryFilter
+      sort,
+      category
     );
     if (productsInDataBase.status === "succes") {
       if (productsInDataBase.payload.docs.length) {

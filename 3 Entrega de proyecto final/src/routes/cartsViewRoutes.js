@@ -6,16 +6,12 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   const cartsInDatabase = await newCartManager.showDataBase()
-  console.log(cartsInDatabase);
-  
   res.render("allCartView",{cartsInDatabase});
 });
 
 router.get("/:cartId", async (req, res) => {
   const cartId = req.params.cartId;
   const cart = await newCartManager.getCartById(cartId);
-  console.log(cart);
-  
   res.render("cartView",{cart});
 });
 
