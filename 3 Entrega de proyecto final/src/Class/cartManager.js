@@ -7,11 +7,10 @@ class CartManager {
     return cartInDataBase;
   }
 
-  async cartsInDatabase(limit) {
+  async cartsInDatabase() {
     const cartsInDatabase = await this.showDataBase();
-    const limitData = cartsInDatabase.slice(0, limit);
-    if (limitData.length) {
-      return limitData;
+    if (cartsInDatabase.length) {
+      return cartsInDatabase;
     } else
       return {
         messaje:
@@ -137,7 +136,7 @@ async deleteOneProductFronCart(params){
     const cartFinded = cartsInDatabase.find((item) => item._id == params.idcart);
     if (cartFinded) {
       const productExistInCart = cartFinded.products.find(
-        (item) => item.product == params.idproduct
+        (item) => item.product._id == params.idproduct
       );
       if (productExistInCart) {
         productExistInCart.quantity = body.quantity
@@ -146,7 +145,7 @@ async deleteOneProductFronCart(params){
           return {
             messaje:
               "Se modifico el quantity del producto" }
-       }else {return{ messaje: "Ese producto aun no existe en este carrito" };}
+       }else {return{ messaje: "Ese producto aun no existe en este carrito, por lo tanto no podes cambiar la cantidad" };}
       }else{  return{    messaje:      "Ese carrito no existe"  };
 }  }
 
@@ -154,12 +153,12 @@ async modificateCart(params,body){
   const cartsInDatabase = await this.showDataBase();
   const cartFinded = cartsInDatabase.find((item) => item._id == params.idcart);
   if (cartFinded) {
-    const cartModificated = {...cartFinded,products:body.products}
+    const cartModificated = {...cartFinded,products:body}
       await cartDb.updateOne(
         { _id: params.idcart },cartModificated)
         return {
           messaje:
-            "Se modificaron todos los productos del carrito" }
+            "Se cambiaron todos los productos del carrito, por el arreglo de productos enviado por body" }
     }else{  return{    messaje:      "Ese carrito no existe"  };
 }  }
 

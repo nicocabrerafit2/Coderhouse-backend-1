@@ -132,7 +132,9 @@ if (sort) {
   }
   async modifyProduct(productId, body) {
     const productsInDataBase = await this.showDataBase();
-    const result = productsInDataBase.find((item) => item._id == productId);
+    console.log(productsInDataBase);
+    
+    const result = productsInDataBase.payload.docs.find((item) => item._id == productId);
     if (result) {
       const { title, description, code, price, stock, category } = body;
       if (title && description && code && price && stock && category) {

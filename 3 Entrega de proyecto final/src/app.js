@@ -49,11 +49,11 @@ const connectToDataBase = async () => {
 connectToDataBase();
 
 websocketServer.on("connection", async (socket) => {
-  console.log("Cliente conectado");
+  /*console.log("Cliente conectado");
   console.log({
     id: socket.id,
     "Números de clientes conectados": websocketServer.engine.clientsCount,
-  });
+  });*/
   const products = await newProductManager.showDataBase();
   websocketServer.emit("showProducts", products);
 
@@ -87,8 +87,4 @@ socket.on("addProductInCart", async (productId) => {
   if (result.status === "error") {
     websocketServer.emit("error", result.messaje);
   } 
-});
-
-
-
-})
+})})

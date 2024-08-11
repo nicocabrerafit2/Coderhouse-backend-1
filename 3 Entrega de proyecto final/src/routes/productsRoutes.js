@@ -25,7 +25,6 @@ router.post("/", async (req, res) => {
 router.put("/:productId", async (req, res) => {
   const body = req.body;
   const productId = req.params.productId;
-
   const modifyProduct = await newProductManager.modifyProduct(productId, body);
   res.json(modifyProduct);
 });

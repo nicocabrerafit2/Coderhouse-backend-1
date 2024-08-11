@@ -66,6 +66,7 @@ const addProduct = () => {
     category: String(document.querySelector("#addCategory").value),
   };
   socket.emit("addProductFromView", productToAdd);
+  Swal.fire("El producto se agregó al final de la lista");
 };
 
 const deleteProduct = (productId) => {
